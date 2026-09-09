@@ -37,7 +37,7 @@ let sqliteInstance: Database.Database | null = null;
  * Environment: CHROME_MCP_AGENT_DB_FILE overrides the default path.
  */
 export function getDatabasePath(): string {
-  const envPath = process.env.CHROME_MCP_AGENT_DB_FILE;
+  const envPath = process.env.NEXUSAI_AGENT_DB_FILE || process.env.CHROME_MCP_AGENT_DB_FILE;
   if (envPath && envPath.trim()) {
     return path.resolve(envPath.trim());
   }

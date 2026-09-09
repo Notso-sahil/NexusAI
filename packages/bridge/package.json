@@ -4,6 +4,7 @@
   "description": "NexusAI Native-Messaging host and MCP server (Node.js)",
   "main": "dist/index.js",
   "bin": {
+    "nexus-bridge": "./dist/cli.js",
     "mcp-chrome-bridge": "./dist/cli.js",
     "chrome-mcp-bridge": "./dist/cli.js",
     "mcp-chrome-stdio": "./dist/mcp/mcp-server-stdio.js"
