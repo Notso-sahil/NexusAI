@@ -623,5 +623,15 @@ export const initNativeHostListener = () => {
       }
       return true;
     }
+
+    // Direct tool execution from internal extension pages (e.g. ResumeHub in popup)
+    if (message.action === 'CALL_TOOL' || message.type === NativeMessageType.CALL_TOOL) {
+      handleCallTool({ name: message.name, args: message.args })
+        .then((result) => sendResponse(result))
+        .catch((error) =>
+          sendResponse({ error: error instanceof Error ? error.message : String(error) }),
+        );
+      return true;
+    }
   });
 };

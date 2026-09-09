@@ -13,6 +13,7 @@ import type {
   AgentCliPreference,
   AgentUsageStats,
 } from '@nexusai/shared';
+import { STORAGE_KEYS } from '@/common/constants';
 
 /**
  * Request lifecycle state.
@@ -284,9 +285,16 @@ export function useAgentChat(options: UseAgentChatOptions) {
     // User-visible content is always the user's raw input
     const userText = input.value.trim();
     // Actual instruction sent to server can be overridden (e.g., with context prepended)
-    const instructionText = chatOptions.instruction?.trim() || userText;
+    let instructionText = chatOptions.instruction?.trim() || userText;
 
     if (!userText) return;
+
+    try {
+      const stored = await chrome.storage.local.get([STORAGE_KEYS.HUMAN_TEXT_ENABLED]);
+      if (stored[STORAGE_KEYS.HUMAN_TEXT_ENABLED] !== false) {
+        instructionText = `${instructionText}\n\n[Directive: Human-Generated Voice. Write naturally, directly, and specifically. Sound like a real person, not an AI or corporate writer. Start with the point. Skip throat-clearing openings and summaries. Never use em dashes (—). Avoid AI words: delve, robust, pivotal, transformative, cutting-edge, showcasing, underscoring, spearhead, foster, streamline, beacon, testament, tapestry, game-changer, multifaceted, harness, seamless.]`;
+      }
+    } catch {}
 
     const ready = await options.ensureServer();
     const serverPort = options.getServerPort();

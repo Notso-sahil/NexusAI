@@ -8,6 +8,28 @@
         </div>
       </div>
       <div class="content">
+        <!-- Human-Generated Voice Toggle Banner -->
+        <div class="section humanizer-banner-section">
+          <div class="humanizer-banner-card">
+            <div class="humanizer-meta">
+              <div class="humanizer-title-row">
+                <span class="humanizer-icon">✍️</span>
+                <span class="humanizer-title">Human-Generated Voice</span>
+                <span :class="['humanizer-pill', isHumanTextEnabled ? 'active' : 'inactive']">
+                  {{ isHumanTextEnabled ? 'Active' : 'Off' }}
+                </span>
+              </div>
+              <p class="humanizer-desc">
+                Enforces natural, direct human tone: skips AI throat-clearing, bans corporate buzzwords, and cuts filler.
+              </p>
+            </div>
+            <label class="nexus-switch-modern" title="Toggle 100% Humanized Prose">
+              <input type="checkbox" v-model="isHumanTextEnabled" @change="handleHumanTextToggle" />
+              <span class="nexus-slider-round"></span>
+            </label>
+          </div>
+        </div>
+
         <!-- Bridge Gateway Configuration Card -->
         <div class="section">
           <h2 class="section-title">{{ getMessage('nativeServerConfigLabel') }}</h2>
@@ -229,6 +251,39 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
               </svg>
             </button>
+            <button class="entry-item" @click="currentView = 'resume-hub'">
+              <div class="entry-icon resume">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+              </div>
+              <div class="entry-content">
+                <span class="entry-title">Resume Vault & Job Applier</span>
+                <span class="entry-desc">Profile vault & autonomous job application autofill</span>
+              </div>
+              <svg
+                class="entry-arrow"
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
           </div>
         </div>
       </div>
@@ -291,6 +346,12 @@
       @clear-all-cache="clearAllCache"
     />
 
+    <!-- Resume Hub Sub-view -->
+    <ResumeHub
+      v-show="currentView === 'resume-hub'"
+      @back="currentView = 'home'"
+    />
+
     <ConfirmDialog
       :visible="showClearConfirmation"
       :title="getMessage('confirmClearDataTitle')"
@@ -342,7 +403,7 @@ import {
   cleanupModelCache,
 } from '@/utils/semantic-similarity-engine';
 import { BACKGROUND_MESSAGE_TYPES } from '@/common/message-types';
-import { LINKS } from '@/common/constants';
+import { LINKS, STORAGE_KEYS } from '@/common/constants';
 import { getMessage } from '@/utils/i18n';
 import { useAgentTheme, type AgentThemeId } from '../sidepanel/composables/useAgentTheme';
 
@@ -350,6 +411,7 @@ import ConfirmDialog from './components/ConfirmDialog.vue';
 import ProgressIndicator from './components/ProgressIndicator.vue';
 import ModelCacheManagement from './components/ModelCacheManagement.vue';
 import LocalModelPage from './components/LocalModelPage.vue';
+import ResumeHub from './components/ResumeHub.vue';
 import {
   DocumentIcon,
   DatabaseIcon,
@@ -366,11 +428,38 @@ import {
   MarkerIcon,
 } from './components/icons';
 
+// Human-Generated Voice state
+const isHumanTextEnabled = ref(true);
+
+const loadHumanTextSetting = async () => {
+  try {
+    const res = await chrome.storage.local.get([STORAGE_KEYS.HUMAN_TEXT_ENABLED]);
+    if (res[STORAGE_KEYS.HUMAN_TEXT_ENABLED] !== undefined) {
+      isHumanTextEnabled.value = res[STORAGE_KEYS.HUMAN_TEXT_ENABLED] !== false;
+    } else {
+      isHumanTextEnabled.value = true;
+      await chrome.storage.local.set({ [STORAGE_KEYS.HUMAN_TEXT_ENABLED]: true });
+    }
+  } catch (err) {
+    console.error('Failed to load human text setting:', err);
+  }
+};
+
+const handleHumanTextToggle = async () => {
+  try {
+    await chrome.storage.local.set({
+      [STORAGE_KEYS.HUMAN_TEXT_ENABLED]: isHumanTextEnabled.value,
+    });
+  } catch (err) {
+    console.error('Failed to save human text setting:', err);
+  }
+};
+
 // Agent theme - synchronized with sidepanel preference
 const { theme: agentTheme, initTheme } = useAgentTheme();
 
-// Current active view: home or local-model
-const currentView = ref<'home' | 'local-model'>('home');
+// Current active view: home, local-model, or resume-hub
+const currentView = ref<'home' | 'local-model' | 'resume-hub'>('home');
 
 // Coming Soon Toast
 const comingSoonToast = ref<{ show: boolean; feature: string }>({ show: false, feature: '' });
@@ -1515,6 +1604,7 @@ const setupServerStatusListener = () => {
 onMounted(async () => {
   // Initialize theme
   await initTheme();
+  await loadHumanTextSetting();
   await loadPortPreference();
   await loadModelPreference();
   await checkNativeConnection();
@@ -2588,6 +2678,11 @@ onUnmounted(() => {
   color: #8b5cf6;
 }
 
+.entry-icon.resume {
+  background: rgba(14, 165, 233, 0.12);
+  color: #0284c7;
+}
+
 .entry-content {
   flex: 1;
   min-width: 0;
@@ -2675,5 +2770,124 @@ onUnmounted(() => {
 .toast-leave-to {
   opacity: 0;
   transform: translateX(-50%) translateY(12px);
+}
+
+/* Human-Generated Voice Banner */
+.humanizer-banner-section {
+  margin-bottom: 12px;
+}
+
+.humanizer-banner-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--ac-surface, #ffffff);
+  border: 1px solid var(--ac-border, #e5e5e5);
+  border-radius: var(--ac-radius-card, 12px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.humanizer-banner-card:hover {
+  border-color: var(--ac-accent, #d97757);
+}
+
+.humanizer-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.humanizer-title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 3px;
+}
+
+.humanizer-icon {
+  font-size: 14px;
+}
+
+.humanizer-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ac-text, #1a1a1a);
+}
+
+.humanizer-pill {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.humanizer-pill.active {
+  background: rgba(16, 185, 129, 0.15);
+  color: #059669;
+}
+
+.humanizer-pill.inactive {
+  background: rgba(148, 163, 184, 0.15);
+  color: #64748b;
+}
+
+.humanizer-desc {
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--ac-text-subtle, #737373);
+  margin: 0;
+}
+
+/* Modern Switch */
+.nexus-switch-modern {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.nexus-switch-modern input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.nexus-slider-round {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #cbd5e1;
+  transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 34px;
+}
+
+.nexus-slider-round:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.nexus-switch-modern input:checked + .nexus-slider-round {
+  background-color: var(--ac-accent, #d97757);
+}
+
+.nexus-switch-modern input:checked + .nexus-slider-round:before {
+  transform: translateX(16px);
 }
 </style>

@@ -28,3 +28,7 @@ export {
   performanceAnalyzeInsightTool,
 } from './performance';
 export { gifRecorderTool } from './gif-recorder';
+export { jobApplierTool } from './job-applier';
+export { quizSolverTool } from './quiz-solver';
+export { formAutofillTool } from './form-autofill';
+

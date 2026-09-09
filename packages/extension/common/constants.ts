@@ -235,6 +235,10 @@ export const STORAGE_KEYS = {
   RR_TRIGGERS: 'rr_triggers',
   // Persistent recording state (guards resume across navigations/service worker restarts)
   RR_RECORDING_STATE: 'rr_recording_state',
+  // Resume vault profile key
+  RESUME_PROFILE: 'nexus_resume_profile',
+  // Human-generated text mode toggle
+  HUMAN_TEXT_ENABLED: 'nexus_human_text_enabled',
 } as const;
 
 // Notification Configuration
