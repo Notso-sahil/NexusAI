@@ -126,7 +126,7 @@ export function summarizeNode(n?: NodeBase | null): string {
   if (n.type === STEP_TYPES.DRAG) {
     const a = n.config?.start?.candidates?.[0]?.value || '';
     const b = n.config?.end?.candidates?.[0]?.value || '';
-    return a || b ? `${a} -> ${b}` : '拖拽';
+    return a || b ? `${a} -> ${b}` : 'Drag';
   }
   if (n.type === STEP_TYPES.SCROLL) {
     const mode = n.config?.mode || 'offset';

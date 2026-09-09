@@ -120,7 +120,7 @@ export default defineConfig({
       }) as any,
     ],
     build: {
-      target: 'es2015',
+      target: 'es2022',
       sourcemap: env.mode !== 'production',
       reportCompressedSize: false,
       chunkSizeWarningLimit: 1500,

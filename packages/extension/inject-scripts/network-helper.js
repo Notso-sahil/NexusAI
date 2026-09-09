@@ -174,12 +174,12 @@ if (window.__NETWORK_CAPTURE_HELPER_INITIALIZED__) {
         options.body = body;
       }
 
-      // 创建一个带超时的 fetch
+      // Create fetch with abort timeout
       const fetchWithTimeout = async (url, options, timeout) => {
         const controller = new AbortController();
         const signal = controller.signal;
 
-        // 设置超时
+        // Configure timeout
         const timeoutId = setTimeout(() => controller.abort(), timeout);
 
         try {
@@ -192,7 +192,7 @@ if (window.__NETWORK_CAPTURE_HELPER_INITIALIZED__) {
         }
       };
 
-      // 发送带超时的请求
+      // Dispatch fetch request with timeout
       const response = await fetchWithTimeout(url, options, timeout);
 
       // Process response

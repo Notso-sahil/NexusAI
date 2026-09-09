@@ -1,11 +1,11 @@
 <template>
   <div class="form-section">
     <div class="form-group">
-      <label class="form-label">元素选择器（可选）</label>
+      <label class="form-label">Element Selector (Optional)</label>
       <input
         class="form-input"
         v-model="(node as any).config.selector"
-        placeholder="为空则截取可视区或全页"
+        placeholder="Leave blank to capture viewport"
       />
     </div>
     <div class="form-group checkbox-group">
@@ -14,11 +14,11 @@
       >
     </div>
     <div class="form-group">
-      <label class="form-label">保存为变量</label>
+      <label class="form-label">Save to Variable</label>
       <input
         class="form-input"
         v-model="(node as any).config.saveAs"
-        placeholder="变量名，例如 shot"
+        placeholder="Variable name, e.g. screenshotData"
       />
     </div>
   </div>

@@ -4,7 +4,7 @@
     <div class="section-title">未找到节点规范</div>
     <div class="help">该节点尚未提供 NodeSpec，已回退到默认属性面板。</div>
   </div>
-  <!-- 将通用字段留给外层 PropertyPanel 渲染（timeoutMs/screenshotOnFail等） -->
+
 </template>
 
 <script lang="ts" setup>

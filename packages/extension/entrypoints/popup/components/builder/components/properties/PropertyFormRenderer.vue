@@ -13,7 +13,7 @@
     </div>
 
     <div v-if="errors.length" class="error-box">
-      <div class="error-title">⚠️ 配置错误</div>
+      <div class="error-title">⚠️ Configuration Errors</div>
       <div v-for="e in errors" :key="e" class="error-item">{{ e }}</div>
     </div>
   </div>

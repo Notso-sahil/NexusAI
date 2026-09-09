@@ -11,7 +11,7 @@
       </select>
     </div>
     <div class="form-group" :class="{ invalid: !(node as any).config?.url }" data-field="http.url">
-      <label class="form-label">URL 地址</label>
+      <label class="form-label">Target URL</label>
       <input
         class="form-input"
         v-model="(node as any).config.url"

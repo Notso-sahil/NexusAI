@@ -1,8 +1,8 @@
 <template>
   <div class="form-section">
     <div class="form-group">
-      <label class="form-label">元素选择器（可选）</label>
-      <input class="form-input" v-model="(node as any).config.selector" placeholder="CSS 选择器" />
+      <label class="form-label">Element Selector (Optional)</label>
+      <input class="form-input" v-model="(node as any).config.selector" placeholder="CSS Selector" />
     </div>
     <div class="form-group">
       <label class="form-label">属性</label>
@@ -22,8 +22,8 @@
       ></textarea>
     </div>
     <div class="form-group" :class="{ invalid: !(node as any).config?.saveAs }">
-      <label class="form-label">保存为变量</label>
-      <input class="form-input" v-model="(node as any).config.saveAs" placeholder="变量名" />
+      <label class="form-label">Save to Variable</label>
+      <input class="form-input" v-model="(node as any).config.saveAs" placeholder="Variable name" />
     </div>
   </div>
 </template>

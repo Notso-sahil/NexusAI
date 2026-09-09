@@ -13,13 +13,13 @@
       <input class="form-input" v-model="(node as any).config.itemVar" placeholder="默认 item" />
     </div>
     <div class="form-group">
-      <label class="form-label">子流 ID</label>
+      <label class="form-label">Subflow ID</label>
       <input
         class="form-input"
         v-model="(node as any).config.subflowId"
-        placeholder="选择或新建子流"
+        placeholder="Select or create subflow"
       />
-      <button class="btn-sm" style="margin-top: 8px" @click="onCreateSubflow">新建子流</button>
+      <button class="btn-sm" style="margin-top: 8px" @click="onCreateSubflow">New Subflow</button>
     </div>
   </div>
 </template>
@@ -32,7 +32,7 @@ const props = defineProps<{ node: NodeBase }>();
 const emit = defineEmits<{ (e: 'create-subflow', id: string): void }>();
 
 function onCreateSubflow() {
-  const id = prompt('请输入新子流ID');
+  const id = prompt('Enter new subflow identifier:');
   if (!id) return;
   emit('create-subflow', id);
   const n = props.node as any;

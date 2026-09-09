@@ -1,19 +1,19 @@
 <template>
   <div class="form-section">
     <div class="form-group">
-      <label class="form-label">按 URL 包含匹配（优先）</label>
+      <label class="form-label">Match by URL Contains (Primary)</label>
       <input
         class="form-input"
         v-model="(node as any).config.frame.urlContains"
-        placeholder="frame URL 包含的字符串"
+        placeholder="Frame URL substring"
       />
     </div>
     <div class="form-group">
-      <label class="form-label">按索引匹配（从 0 起，仅子 frame）</label>
-      <input class="form-input" v-model="(node as any).config.frame.index" placeholder="索引数字" />
+      <label class="form-label">Match by Frame Index (0-indexed)</label>
+      <input class="form-input" v-model="(node as any).config.frame.index" placeholder="Index number" />
     </div>
     <div class="text-xs text-slate-500" style="padding: 0 20px"
-      >同源/可注入 frame 可用；留空则回到顶级页面</div
+      >Accessible frames only; blank for top page</div
     >
   </div>
 </template>

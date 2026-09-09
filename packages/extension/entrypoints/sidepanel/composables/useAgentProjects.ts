@@ -199,7 +199,7 @@ export function useAgentProjects(options: UseAgentProjectsOptions) {
       let allowCreate = false;
       if (validation.needsCreation) {
         const confirmed = confirm(
-          `目录 "${validation.absolute}" 不存在，是否创建？\n\nThe directory "${validation.absolute}" does not exist. Create it?`,
+          `The directory "${validation.absolute}" does not exist. Would you like to create it?`,
         );
         if (!confirmed) {
           return null;
@@ -425,10 +425,7 @@ export function useAgentProjects(options: UseAgentProjectsOptions) {
       if (existingProject) {
         // Project already exists - select it instead of creating a new one
         const shouldSwitch = confirm(
-          `目录 "${validation.absolute}" 已存在对应的项目：${existingProject.name}\n\n` +
-            `是否切换到该项目？\n\n` +
-            `A project already exists for "${validation.absolute}": ${existingProject.name}\n` +
-            `Switch to that project?`,
+          `A project already exists for "${validation.absolute}": ${existingProject.name}\n\nSwitch to that project?`,
         );
         if (shouldSwitch) {
           selectedProjectId.value = existingProject.id;
@@ -444,7 +441,7 @@ export function useAgentProjects(options: UseAgentProjectsOptions) {
       let allowCreate = false;
       if (validation.needsCreation) {
         const confirmed = confirm(
-          `目录 "${validation.absolute}" 不存在，是否创建？\n\nThe directory "${validation.absolute}" does not exist. Create it?`,
+          `The directory "${validation.absolute}" does not exist. Would you like to create it?`,
         );
         if (!confirmed) {
           return null;

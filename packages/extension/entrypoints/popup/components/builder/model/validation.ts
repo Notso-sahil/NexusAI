@@ -38,7 +38,7 @@ export function validateNode(n: NodeBase): string[] {
       break;
     }
     case STEP_TYPES.HANDLE_DOWNLOAD: {
-      // filenameContains 可选
+
       break;
     }
     case STEP_TYPES.EXTRACT: {
@@ -52,7 +52,7 @@ export function validateNode(n: NodeBase): string[] {
       break;
     }
     case STEP_TYPES.SCREENSHOT: {
-      // selector 可空（全页/可视区），不强制
+
       break;
     }
     case STEP_TYPES.TRIGGER_EVENT: {
@@ -89,11 +89,11 @@ export function validateNode(n: NodeBase): string[] {
       break;
     }
     case STEP_TYPES.CLOSE_TAB: {
-      // 允许空（关闭当前标签页），不强制
+
       break;
     }
     case STEP_TYPES.SCRIPT: {
-      // 若配置了 saveAs/assign，应提供 code
+
       const hasAssign = c?.assign && Object.keys(c.assign).length > 0;
       if ((c?.saveAs || hasAssign) && !String(c?.code || '').trim())
         errs.push('Script: 配置了保存/映射但缺少代码');
