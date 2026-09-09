@@ -7,8 +7,8 @@ if "%SCRIPT_DIR:~-1%"=="\" set "SCRIPT_DIR=%SCRIPT_DIR:~0,-1%"
 set "NODE_SCRIPT=%SCRIPT_DIR%\index.js"
 
 REM Setup log directory - prefer user-writable locations
-REM Windows: %LOCALAPPDATA%\mcp-chrome-bridge\logs
-set "LOG_DIR=%LOCALAPPDATA%\mcp-chrome-bridge\logs"
+REM Windows: %LOCALAPPDATA%\nexus-bridge\logs
+set "LOG_DIR=%LOCALAPPDATA%\nexus-bridge\logs"
 if not exist "%LOG_DIR%" mkdir "%LOG_DIR%" 2>nul
 if not exist "%LOG_DIR%" (
     REM Fallback to package directory if user directory not writable

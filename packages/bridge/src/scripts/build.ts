@@ -3,78 +3,74 @@ import fs from 'fs';
 import path from 'path';
 
 const distDir = path.join(__dirname, '..', '..', 'dist');
-// 清理上次构建
-console.log('清理上次构建...');
+
+// Clean previous build artifacts
+console.log('Cleaning previous build artifacts...');
 try {
   fs.rmSync(distDir, { recursive: true, force: true });
 } catch (err) {
-  // 忽略目录不存在的错误
+  // Ignore errors if directory does not exist
   console.log(err);
 }
 
-// 创建dist目录
+// Create dist directory
 fs.mkdirSync(distDir, { recursive: true });
-fs.mkdirSync(path.join(distDir, 'logs'), { recursive: true }); // 创建logs目录
-console.log('dist 和 dist/logs 目录已创建/确认存在');
+fs.mkdirSync(path.join(distDir, 'logs'), { recursive: true });
+console.log('Created dist and dist/logs directories');
 
-// 编译TypeScript
-console.log('编译TypeScript...');
+// Compile TypeScript
+console.log('Compiling TypeScript sources...');
 execSync('tsc', { stdio: 'inherit' });
 
-// 复制配置文件
-console.log('复制配置文件...');
+// Copy configuration files
+console.log('Copying configuration files...');
 const configSourcePath = path.join(__dirname, '..', 'mcp', 'stdio-config.json');
 const configDestPath = path.join(distDir, 'mcp', 'stdio-config.json');
 
 try {
-  // 确保目标目录存在
   fs.mkdirSync(path.dirname(configDestPath), { recursive: true });
 
   if (fs.existsSync(configSourcePath)) {
     fs.copyFileSync(configSourcePath, configDestPath);
-    console.log(`已将 stdio-config.json 复制到 ${configDestPath}`);
+    console.log(`Copied stdio-config.json to ${configDestPath}`);
   } else {
-    console.error(`错误: 配置文件未找到: ${configSourcePath}`);
+    console.error(`Error: Configuration file not found: ${configSourcePath}`);
   }
 } catch (error) {
-  console.error('复制配置文件时出错:', error);
+  console.error('Error copying configuration file:', error);
 }
 
-// 复制package.json并更新其内容
-console.log('准备package.json...');
+// Prepare package.json and README
+console.log('Preparing package distribution metadata...');
 const packageJson = require('../../package.json');
 
-// 创建安装说明
 const readmeContent = `# ${packageJson.name}
 
-本程序为Chrome扩展的Native Messaging主机端。
+NexusAI Native Messaging Host & MCP Bridge for Autonomous Browser Control.
 
-## 安装说明
+## Installation & Registration
 
-1. 确保已安装Node.js
-2. 全局安装本程序:
-   \`\`\`
-   npm install -g ${packageJson.name}
-   \`\`\`
-3. 注册Native Messaging主机:
-   \`\`\`
-   # 用户级别安装（推荐）
-   ${packageJson.name} register
+1. Ensure Node.js (v20+) is installed.
+2. Build and register the native host:
+   \`\`\`bash
+   # User-level installation (recommended)
+   node dist/scripts/register.js
 
-   # 如果用户级别安装失败，可以尝试系统级别安装
-   ${packageJson.name} register --system
-   # 或者使用管理员权限
-   sudo ${packageJson.name} register
+   # Or via global CLI
+   nexus-bridge register
    \`\`\`
 
-## 使用方法
+## Operation
 
-此应用程序由Chrome扩展自动启动，无需手动运行。
+This application is spawned automatically by the NexusAI Chrome Extension via Native Messaging. Manual execution is only required for diagnostics:
+\`\`\`bash
+nexus-bridge doctor
+\`\`\`
 `;
 
 fs.writeFileSync(path.join(distDir, 'README.md'), readmeContent);
 
-console.log('复制包装脚本...');
+console.log('Copying host launcher wrapper scripts...');
 const scriptsSourceDir = path.join(__dirname, '.');
 const macOsWrapperSourcePath = path.join(scriptsSourceDir, 'run_host.sh');
 const windowsWrapperSourcePath = path.join(scriptsSourceDir, 'run_host.bat');
@@ -85,45 +81,43 @@ const windowsWrapperDestPath = path.join(distDir, 'run_host.bat');
 try {
   if (fs.existsSync(macOsWrapperSourcePath)) {
     fs.copyFileSync(macOsWrapperSourcePath, macOsWrapperDestPath);
-    console.log(`已将 ${macOsWrapperSourcePath} 复制到 ${macOsWrapperDestPath}`);
+    console.log(`Copied ${macOsWrapperSourcePath} to ${macOsWrapperDestPath}`);
   } else {
-    console.error(`错误: macOS 包装脚本源文件未找到: ${macOsWrapperSourcePath}`);
+    console.error(`Error: macOS wrapper script not found: ${macOsWrapperSourcePath}`);
   }
 
   if (fs.existsSync(windowsWrapperSourcePath)) {
     fs.copyFileSync(windowsWrapperSourcePath, windowsWrapperDestPath);
-    console.log(`已将 ${windowsWrapperSourcePath} 复制到 ${windowsWrapperDestPath}`);
+    console.log(`Copied ${windowsWrapperSourcePath} to ${windowsWrapperDestPath}`);
   } else {
-    console.error(`错误: Windows 包装脚本源文件未找到: ${windowsWrapperSourcePath}`);
+    console.error(`Error: Windows wrapper script not found: ${windowsWrapperSourcePath}`);
   }
 } catch (error) {
-  console.error('复制包装脚本时出错:', error);
+  console.error('Error copying launcher wrapper scripts:', error);
 }
 
-// 为关键JavaScript文件和macOS包装脚本添加可执行权限
-console.log('添加可执行权限...');
-const filesToMakeExecutable = ['index.js', 'cli.js', 'run_host.sh']; // cli.js 假设在 dist 根目录
+// Add execution permissions for critical scripts and binaries
+console.log('Setting execution permissions...');
+const filesToMakeExecutable = ['index.js', 'cli.js', 'run_host.sh'];
 
 filesToMakeExecutable.forEach((file) => {
-  const filePath = path.join(distDir, file); // filePath 现在是目标路径
+  const filePath = path.join(distDir, file);
   try {
     if (fs.existsSync(filePath)) {
       fs.chmodSync(filePath, '755');
-      console.log(`已为 ${file} 添加可执行权限 (755)`);
+      console.log(`Set execution permissions (755) for ${file}`);
     } else {
-      console.warn(`警告: ${filePath} 不存在，无法添加可执行权限`);
+      console.warn(`Warning: ${filePath} does not exist, cannot set permissions`);
     }
   } catch (error) {
-    console.error(`为 ${file} 添加可执行权限时出错:`, error);
+    console.error(`Error setting execution permissions for ${file}:`, error);
   }
 });
 
-// Write node_path.txt immediately after build to ensure Chrome uses the correct Node.js version.
-// This is critical for development mode where dist is deleted on each rebuild.
-// The file points to the same Node.js that compiled the native modules (better-sqlite3 etc.)
-console.log('写入 node_path.txt...');
+// Write node_path.txt immediately after build to ensure Chrome uses the correct Node.js runtime.
+console.log('Writing node_path.txt...');
 const nodePathFile = path.join(distDir, 'node_path.txt');
 fs.writeFileSync(nodePathFile, process.execPath, 'utf8');
-console.log(`已写入 Node.js 路径: ${process.execPath}`);
+console.log(`Saved Node.js path: ${process.execPath}`);
 
-console.log('✅ 构建完成');
+console.log('Build completed successfully.');

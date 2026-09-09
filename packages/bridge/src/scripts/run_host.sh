@@ -9,12 +9,12 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 NODE_SCRIPT="${SCRIPT_DIR}/index.js"
 
 # Setup log directory - prefer user-writable locations
-# macOS: ~/Library/Logs/mcp-chrome-bridge
-# Linux: $XDG_STATE_HOME/mcp-chrome-bridge/logs or ~/.local/state/mcp-chrome-bridge/logs
+# macOS: ~/Library/Logs/nexus-bridge
+# Linux: $XDG_STATE_HOME/nexus-bridge/logs or ~/.local/state/nexus-bridge/logs
 if [ "$(uname)" = "Darwin" ]; then
-    LOG_DIR="${HOME}/Library/Logs/mcp-chrome-bridge"
+    LOG_DIR="${HOME}/Library/Logs/nexus-bridge"
 else
-    LOG_DIR="${XDG_STATE_HOME:-${HOME}/.local/state}/mcp-chrome-bridge/logs"
+    LOG_DIR="${XDG_STATE_HOME:-${HOME}/.local/state}/nexus-bridge/logs"
 fi
 
 # Fallback: if user directory is not writable, use package directory

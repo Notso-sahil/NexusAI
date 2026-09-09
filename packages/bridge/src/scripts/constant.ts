@@ -1,4 +1,4 @@
-export const COMMAND_NAME = 'mcp-chrome-bridge';
+export const COMMAND_NAME = 'nexus-bridge';
 export const EXTENSION_ID = 'hbdgbgagpkpjffpklnamcljpakneikee';
-export const HOST_NAME = 'com.chromemcp.nativehost';
-export const DESCRIPTION = 'Node.js Host for Browser Bridge Extension';
+export const HOST_NAME = 'com.nexusai.browserhost';
+export const DESCRIPTION = 'NexusAI Native Messaging Host for Autonomous Browser Agent';
