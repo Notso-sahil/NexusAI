@@ -9,3 +9,10 @@ export * from './node-spec-registry';
 export * from './node-specs-builtin';
 export * from './agent-types';
 export * from './message-types';
+export type {
+  ResumeProfile,
+  NexusJobApplierParams,
+  NexusQuizSolverParams,
+  NexusFormAutofillParams,
+} from './tool-schemas';
+

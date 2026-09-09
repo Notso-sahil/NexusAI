@@ -1261,6 +1261,50 @@ export const TOOL_SCHEMAS: ToolSchema[] = [
   }
 ];
 
+export const NEXUS_JOB_APPLIER: ToolSchema = {
+  name: 'nexus_job_applier',
+  description:
+    'Autonomously inspects and fills job applications. Discovers company context (name, role, job description), maps resume profile details into form fields, synthesizes tailored answers for company-specific open-ended questions, and dispatches native input events.',
+  inputSchema: {
+    type: 'object',
+    properties: {
+      tabId: { type: 'number', description: 'Target browser tab ID (defaults to active tab).' },
+      mode: {
+        type: 'string',
+        enum: ['inspect', 'fill', 'full'],
+        description:
+          '"inspect" analyzes the form and company context; "fill" populates fields; "full" performs inspection, answer synthesis, and form filling (default: "full").',
+      },
+      resumeProfile: {
+        type: 'object',
+        description:
+          'Applicant profile object with personal, work experience, skills, and education details. If omitted, uses the stored vault profile from extension storage.',
+      },
+      tailorAnswers: {
+        type: 'boolean',
+        description:
+          'Synthesize contextual answers for open-ended questions based on resume experience and company requirements (default: true).',
+      },
+      customAnswers: {
+        type: 'object',
+        description:
+          'Optional dictionary of question keywords or field names to pre-defined answers to override automated synthesis.',
+      },
+      submitAfter: {
+        type: 'boolean',
+        description:
+          'Automatically click the application submit button after all fields are filled (default: false).',
+      },
+      humanizeText: {
+        type: 'boolean',
+        description:
+          'Generate completely human-like text for questions, removing all AI buzzwords, em dashes, and corporate filler (default: true).',
+      },
+    },
+    required: [],
+  },
+};
+
 export const NEXUS_QUIZ_SOLVER: ToolSchema = {
   name: 'nexus_quiz_solver',
   description: 'Extracts all quiz questions, answer options, and correct answers from the active browser tab. Returns structured JSON with question text, option list, and recommended answer selectors.',
@@ -1268,6 +1312,8 @@ export const NEXUS_QUIZ_SOLVER: ToolSchema = {
     type: 'object',
     properties: {
       tabId: { type: 'number', description: 'Target tab ID (defaults to active tab)' },
+      answers: { type: 'object', description: 'Optional map or array of question prompts to desired answers' },
+      autoSolve: { type: 'boolean', description: 'Automatically evaluate questions and select best options', default: true },
       submitAfter: { type: 'boolean', description: 'Auto-submit the quiz after answering all questions', default: false }
     }
   }
@@ -1282,9 +1328,68 @@ export const NEXUS_FORM_AUTOFILL: ToolSchema = {
     properties: {
       fields: { type: 'object', description: 'Map of field labels/names to fill values', additionalProperties: { type: 'string' } },
       tabId: { type: 'number', description: 'Target tab ID (defaults to active tab)' },
+      clearBefore: { type: 'boolean', description: 'Clear inputs before filling', default: true },
       submit: { type: 'boolean', description: 'Click the submit button after filling', default: false }
     }
   }
 };
 
-TOOL_SCHEMAS.push(NEXUS_QUIZ_SOLVER, NEXUS_FORM_AUTOFILL);
+TOOL_SCHEMAS.push(NEXUS_JOB_APPLIER, NEXUS_QUIZ_SOLVER, NEXUS_FORM_AUTOFILL);
+
+export interface ResumeProfile {
+  fullName?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+  location?: string;
+  city?: string;
+  country?: string;
+  linkedIn?: string;
+  github?: string;
+  portfolio?: string;
+  currentRole?: string;
+  currentCompany?: string;
+  yearsOfExperience?: number | string;
+  noticePeriod?: string;
+  summary?: string;
+  workHistory?: Array<{
+    title: string;
+    company: string;
+    startDate?: string;
+    endDate?: string;
+    description?: string;
+  }>;
+  education?: Array<{
+    degree: string;
+    institution: string;
+    year?: string;
+  }>;
+  skills?: string[];
+  customFields?: Record<string, string>;
+}
+
+export interface NexusJobApplierParams {
+  tabId?: number;
+  mode?: 'inspect' | 'fill' | 'full';
+  resumeProfile?: ResumeProfile;
+  tailorAnswers?: boolean;
+  customAnswers?: Record<string, string>;
+  submitAfter?: boolean;
+  humanizeText?: boolean;
+}
+
+export interface NexusQuizSolverParams {
+  tabId?: number;
+  answers?: Record<string, string> | Array<{ question: string; answer: string }>;
+  autoSolve?: boolean;
+  submitAfter?: boolean;
+}
+
+export interface NexusFormAutofillParams {
+  tabId?: number;
+  fields: Record<string, any>;
+  clearBefore?: boolean;
+  submit?: boolean;
+}
+

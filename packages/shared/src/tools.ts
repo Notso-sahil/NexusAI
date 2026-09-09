@@ -39,6 +39,9 @@ export const TOOL_NAMES = {
     PERFORMANCE_STOP_TRACE: 'performance_stop_trace',
     PERFORMANCE_ANALYZE_INSIGHT: 'performance_analyze_insight',
     GIF_RECORDER: 'chrome_gif_recorder',
+    JOB_APPLIER: 'nexus_job_applier',
+    QUIZ_SOLVER: 'nexus_quiz_solver',
+    FORM_AUTOFILL: 'nexus_form_autofill',
   },
   RECORD_REPLAY: {
     FLOW_RUN: 'record_replay_flow_run',
@@ -1397,4 +1400,107 @@ export const TOOL_SCHEMAS: Tool[] = [
       required: ['action'],
     },
   },
+  {
+    name: TOOL_NAMES.BROWSER.JOB_APPLIER,
+    description:
+      'Autonomously inspects and fills job applications. Discovers company context (name, role, job description), maps resume profile details into form fields, synthesizes tailored answers for company-specific open-ended questions, and dispatches native input events.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        tabId: {
+          type: 'number',
+          description: 'Target browser tab ID (defaults to active tab).',
+        },
+        mode: {
+          type: 'string',
+          enum: ['inspect', 'fill', 'full'],
+          description:
+            '"inspect" analyzes the form and company context; "fill" populates fields; "full" performs inspection, answer synthesis, and form filling (default: "full").',
+        },
+        resumeProfile: {
+          type: 'object',
+          description:
+            'Applicant profile object with personal, work experience, skills, and education details. If omitted, uses the stored vault profile from extension storage.',
+        },
+        tailorAnswers: {
+          type: 'boolean',
+          description:
+            'Synthesize contextual answers for open-ended questions based on resume experience and company requirements (default: true).',
+        },
+        customAnswers: {
+          type: 'object',
+          description:
+            'Optional dictionary of question keywords or field names to pre-defined answers to override automated synthesis.',
+        },
+        submitAfter: {
+          type: 'boolean',
+          description:
+            'Automatically click the application submit button after all fields are filled (default: false).',
+        },
+        humanizeText: {
+          type: 'boolean',
+          description:
+            'Generate completely human-like text for questions, removing all AI buzzwords, em dashes, and corporate filler (default: true).',
+        },
+      },
+      required: [],
+    },
+  },
+  {
+    name: TOOL_NAMES.BROWSER.QUIZ_SOLVER,
+    description:
+      'Autonomous quiz solving tool. Scans questions, multiple choice options, checkboxes, and input blanks on the active page, evaluates the prompts, and selects or types answers.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        tabId: {
+          type: 'number',
+          description: 'Target browser tab ID (defaults to active tab).',
+        },
+        answers: {
+          type: 'object',
+          description:
+            'Optional key-value map or questions array mapping question prompts to desired answers.',
+        },
+        autoSolve: {
+          type: 'boolean',
+          description:
+            'Automatically evaluate questions and select best options when answers map is not provided (default: true).',
+        },
+        submitAfter: {
+          type: 'boolean',
+          description: 'Submit the quiz upon completion (default: false).',
+        },
+      },
+      required: [],
+    },
+  },
+  {
+    name: TOOL_NAMES.BROWSER.FORM_AUTOFILL,
+    description:
+      'Intelligently autofills web forms by matching field names, labels, placeholders, and ARIA attributes with a supplied data object.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        tabId: {
+          type: 'number',
+          description: 'Target browser tab ID (defaults to active tab).',
+        },
+        fields: {
+          type: 'object',
+          description: 'Dictionary of field names, labels, or placeholders to fill values.',
+        },
+        clearBefore: {
+          type: 'boolean',
+          description: 'Clear existing values in inputs before filling (default: true).',
+        },
+        submit: {
+          type: 'boolean',
+          description: 'Click form submit button after filling (default: false).',
+        },
+      },
+      required: ['fields'],
+    },
+  },
 ];
+
