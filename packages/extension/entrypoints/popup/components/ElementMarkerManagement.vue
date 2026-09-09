@@ -32,7 +32,7 @@
         <input v-model="form.selector" placeholder="CSS Selector" class="port-input" />
         <div style="display: flex; gap: 8px; margin-top: 8px">
           <button class="semantic-engine-button" :disabled="!form.selector" type="submit">
-            保存
+            Save Marker
           </button>
           <button class="danger-button" type="button" @click="resetForm">Reset</button>
         </div>

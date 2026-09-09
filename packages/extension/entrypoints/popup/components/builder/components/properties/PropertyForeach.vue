@@ -1,7 +1,7 @@
 <template>
   <div class="form-section">
     <div class="form-group">
-      <label class="form-label">列表变量</label>
+      <label class="form-label">Array / Collection Variable</label>
       <input
         class="form-input"
         v-model="(node as any).config.listVar"
@@ -9,8 +9,8 @@
       />
     </div>
     <div class="form-group">
-      <label class="form-label">循环项变量名</label>
-      <input class="form-input" v-model="(node as any).config.itemVar" placeholder="默认 item" />
+      <label class="form-label">Iterator Variable Name</label>
+      <input class="form-input" v-model="(node as any).config.itemVar" placeholder="Default: item" />
     </div>
     <div class="form-group">
       <label class="form-label">Subflow ID</label>

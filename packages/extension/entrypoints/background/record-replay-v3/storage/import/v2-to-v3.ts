@@ -465,7 +465,7 @@ export function convertFlowV3ToV2(v3Flow: FlowV3): ConversionResult<V2Flow> {
     id: v3Flow.id,
     name: v3Flow.name,
     description: v3Flow.description,
-    version: 2, // V2 版本
+    version: 2, // V2 version
     meta,
     variables: variables.length > 0 ? variables : undefined,
     nodes,

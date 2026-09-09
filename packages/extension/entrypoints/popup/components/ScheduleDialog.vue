@@ -7,7 +7,7 @@
       </div>
       <div class="rr-body">
         <div class="row">
-          <label>启用</label>
+          <label>Enabled</label>
           <label class="chk"><input type="checkbox" v-model="enabled" />Enable Schedule</label>
         </div>
         <div class="row">
@@ -50,7 +50,7 @@
         </div>
       </div>
       <div class="rr-footer">
-        <button class="primary" @click="save">保存</button>
+        <button class="primary" @click="save">Save Schedule</button>
       </div>
     </div>
   </div>
@@ -111,9 +111,9 @@ function safeParse(s: string) {
 }
 
 function describe(s: any) {
-  if (s.type === 'interval') return `每 ${s.when} 分钟`;
-  if (s.type === 'daily') return `每天 ${s.when}`;
-  if (s.type === 'once') return `一次 ${s.when}`;
+  if (s.type === 'interval') return `Every ${s.when} minutes`;
+  if (s.type === 'daily') return `Daily at ${s.when}`;
+  if (s.type === 'once') return `Once at ${s.when}`;
   return '';
 }
 </script>

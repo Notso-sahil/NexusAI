@@ -2,7 +2,7 @@
   <div class="form-section">
     <div class="form-group checkbox-group">
       <label class="checkbox-label"
-        ><input type="checkbox" v-model="cfg.enabled" /> 启用触发器</label
+        ><input type="checkbox" v-model="cfg.enabled" /> Enable Triggers</label
       >
     </div>
     <div class="form-group">
@@ -17,22 +17,22 @@
     <div class="section-header"><span class="section-title">Trigger Modes</span></div>
     <div class="form-group checkbox-group">
       <label class="checkbox-label"
-        ><input type="checkbox" v-model="cfg.modes.manual" /> 手动</label
+        ><input type="checkbox" v-model="cfg.modes.manual" /> Manual Run</label
       >
       <label class="checkbox-label"
-        ><input type="checkbox" v-model="cfg.modes.url" /> 访问 URL</label
+        ><input type="checkbox" v-model="cfg.modes.url" /> URL Navigation</label
       >
       <label class="checkbox-label"
-        ><input type="checkbox" v-model="cfg.modes.contextMenu" /> 右键菜单</label
+        ><input type="checkbox" v-model="cfg.modes.contextMenu" /> Context Menu</label
       >
       <label class="checkbox-label"
-        ><input type="checkbox" v-model="cfg.modes.command" /> 快捷键</label
+        ><input type="checkbox" v-model="cfg.modes.command" /> Keyboard Shortcut</label
       >
       <label class="checkbox-label"
-        ><input type="checkbox" v-model="cfg.modes.dom" /> DOM 变化</label
+        ><input type="checkbox" v-model="cfg.modes.dom" /> DOM Mutation</label
       >
       <label class="checkbox-label"
-        ><input type="checkbox" v-model="cfg.modes.schedule" /> 定时</label
+        ><input type="checkbox" v-model="cfg.modes.schedule" /> Cron Schedule</label
       >
     </div>
   </div>
@@ -103,10 +103,10 @@
     </div>
     <div class="form-group checkbox-group">
       <label class="checkbox-label"
-        ><input type="checkbox" v-model="cfg.dom.appear" /> 出现时触发</label
+        ><input type="checkbox" v-model="cfg.dom.appear" /> Trigger on Element Appearance</label
       >
       <label class="checkbox-label"
-        ><input type="checkbox" v-model="cfg.dom.once" /> 仅触发一次</label
+        ><input type="checkbox" v-model="cfg.dom.once" /> Fire Once Only</label
       >
     </div>
     <div class="form-group">
@@ -129,7 +129,7 @@
           v-model="s.when"
           placeholder="5 or 09:00 or 2026-01-01T10:00:00"
         />
-        <label class="checkbox-label"><input type="checkbox" v-model="s.enabled" /> 启用</label>
+        <label class="checkbox-label"><input type="checkbox" v-model="s.enabled" /> Active</label>
         <button class="btn-icon-sm" @click="move(schedules, i, -1)" :disabled="i === 0">↑</button>
         <button
           class="btn-icon-sm"

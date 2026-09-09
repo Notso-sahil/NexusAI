@@ -100,8 +100,10 @@ export function registerBuiltinSpecs() {
     display: { label: 'Fill Input', iconClass: 'icon-fill', category: 'Actions' },
     ports: { inputs: 1, outputs: [{ label: 'default' }] },
     schema: [
-      { key: 'target', label: 'Target', type: 'json', widget: 'targetlocator' },
-      { key: 'value', label: '输入值', type: 'string', required: true, help: '支持 {var} 模板' },
+      { key: 'value', label: 'Input Value', type: 'string', required: true, help: 'Supports {var} template' },
+      { key: 'clearBefore', label: 'Clear Before', type: 'boolean' },
+      { key: 'delayMs', label: 'Delay (ms)', type: 'number', help: 'Per-keystroke interval in milliseconds' },
+      { key: 'target', label: 'Target', type: 'json', widget: 'targetlocator', required: true },
     ],
     defaults: { value: '' },
   });
@@ -110,18 +112,18 @@ export function registerBuiltinSpecs() {
   registerNodeSpec({
     type: STEP_TYPES.KEY,
     version: 1,
-    display: { label: '键盘', iconClass: 'icon-key', category: 'Actions' },
+    display: { label: 'Keyboard', iconClass: 'icon-key', category: 'Actions' },
     ports: { inputs: 1, outputs: [{ label: 'default' }] },
     schema: [
       {
         key: 'keys',
-        label: '按键序列',
+        label: 'Key Sequence',
         type: 'string',
         widget: 'keysequence',
         required: true,
-        help: '如 Backspace Enter 或 cmd+a',
+        help: 'e.g. Backspace Enter or Control+a',
       },
-      { key: 'target', label: '焦点目标(可选)', type: 'json', widget: 'targetlocator' },
+      { key: 'target', label: 'Focus Target (Optional)', type: 'json', widget: 'targetlocator' },
     ],
     defaults: { keys: '' },
   });
@@ -138,13 +140,13 @@ export function registerBuiltinSpecs() {
         label: 'Modes',
         type: 'select',
         options: [
-          { label: '元素', value: 'element' },
+          { label: 'Element', value: 'element' },
           { label: 'Offset', value: 'offset' },
-          { label: '容器', value: 'container' },
+          { label: 'Container', value: 'container' },
         ] as any,
         default: 'offset',
       },
-      { key: 'target', label: '目标(当元素/容器)', type: 'json', widget: 'targetlocator' },
+      { key: 'target', label: 'Target (when Element/Container)', type: 'json', widget: 'targetlocator' },
       {
         key: 'offset',
         label: 'Offset',
@@ -275,7 +277,7 @@ export function registerBuiltinSpecs() {
           { label: 'Custom Attribute Name', value: 'attr' },
         ] as any,
       },
-      { key: 'js', label: '自定义JS', type: 'string', help: 'Execute in page context and return value' },
+      { key: 'js', label: 'Custom JavaScript', type: 'string', help: 'Execute in page context and return value' },
       { key: 'saveAs', label: 'Save Variable', type: 'string', required: true },
     ],
     defaults: { saveAs: '' },
@@ -535,7 +537,7 @@ export function registerBuiltinSpecs() {
     schema: [
       {
         key: 'sleep',
-        label: '延迟',
+        label: 'Delay (ms)',
         type: 'number',
         widget: 'duration',
         required: true,

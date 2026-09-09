@@ -12,10 +12,10 @@
       </div>
       <div class="form-group checkbox-group">
         <label class="checkbox-label"
-          ><input type="checkbox" v-model="(node as any).config.bubbles" /> 冒泡</label
+          ><input type="checkbox" v-model="(node as any).config.bubbles" /> Bubbles</label
         >
         <label class="checkbox-label"
-          ><input type="checkbox" v-model="(node as any).config.cancelable" /> 可取消</label
+          ><input type="checkbox" v-model="(node as any).config.cancelable" /> Cancelable</label
         >
       </div>
     </div>

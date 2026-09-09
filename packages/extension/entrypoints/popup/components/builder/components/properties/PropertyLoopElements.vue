@@ -1,16 +1,16 @@
 <template>
   <div class="form-section">
     <div class="form-group">
-      <label class="form-label">元素选择器</label>
+      <label class="form-label">Element Selector</label>
       <input class="form-input" v-model="(node as any).config.selector" placeholder="CSS Selector" />
     </div>
     <div class="form-group">
-      <label class="form-label">列表变量名</label>
-      <input class="form-input" v-model="(node as any).config.saveAs" placeholder="默认 elements" />
+      <label class="form-label">Collection Variable Name</label>
+      <input class="form-input" v-model="(node as any).config.saveAs" placeholder="Default: elements" />
     </div>
     <div class="form-group">
-      <label class="form-label">循环项变量名</label>
-      <input class="form-input" v-model="(node as any).config.itemVar" placeholder="默认 item" />
+      <label class="form-label">Item Variable Name</label>
+      <input class="form-input" v-model="(node as any).config.itemVar" placeholder="Default: item" />
     </div>
     <div class="form-group">
       <label class="form-label">Subflow ID</label>

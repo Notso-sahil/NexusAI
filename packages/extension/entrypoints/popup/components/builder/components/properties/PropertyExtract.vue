@@ -5,15 +5,15 @@
       <input class="form-input" v-model="(node as any).config.selector" placeholder="CSS Selector" />
     </div>
     <div class="form-group">
-      <label class="form-label">属性</label>
+      <label class="form-label">Attribute Name</label>
       <input
         class="form-input"
         v-model="(node as any).config.attr"
-        placeholder="text/textContent 或属性名"
+        placeholder="text/textContent or attribute name (e.g. href, src)"
       />
     </div>
     <div class="form-group">
-      <label class="form-label">自定义 JS（返回值）</label>
+      <label class="form-label">Custom JavaScript Expression (Return Value)</label>
       <textarea
         class="form-textarea"
         v-model="(node as any).config.js"

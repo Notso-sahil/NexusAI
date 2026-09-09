@@ -16,7 +16,7 @@
       </div>
       <div class="form-group checkbox-group">
         <label class="checkbox-label"
-          ><input type="checkbox" v-model="(node as any).config.remove" /> 删除属性</label
+          ><input type="checkbox" v-model="(node as any).config.remove" /> Remove Attribute</label
         >
       </div>
     </div>

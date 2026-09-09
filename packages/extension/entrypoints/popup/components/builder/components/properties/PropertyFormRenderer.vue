@@ -1,6 +1,6 @@
 <template>
   <div class="form-section">
-    <div class="section-title">配置</div>
+    <div class="section-title">Configuration</div>
     <div v-for="field in schema" :key="field.key" class="form-group" :data-field="field.key">
       <label class="form-label">{{ field.label }}</label>
       <component
@@ -70,7 +70,7 @@ const errors = computed(() => {
   const cfg = props.node?.config || {};
   const out: string[] = [];
   for (const f of schema.value)
-    if (f.required && (cfg[f.key] === undefined || cfg[f.key] === '')) out.push(`${f.label} 必填`);
+    if (f.required && (cfg[f.key] === undefined || cfg[f.key] === '')) out.push(`${f.label} is required`);
   try {
     const more = spec.value?.validate?.(cfg) || [];
     out.push(...more);
@@ -192,7 +192,7 @@ const JsonField = defineComponent({
         err.value = '';
         emit('update:modelValue', v);
       } catch (e) {
-        err.value = 'JSON 格式错误';
+        err.value = 'Invalid JSON syntax';
       }
     });
     return () =>
@@ -200,7 +200,7 @@ const JsonField = defineComponent({
         h('textarea', {
           class: 'form-input',
           rows: 6,
-          placeholder: '输入 JSON',
+          placeholder: 'Enter valid JSON',
           value: text.value,
           onInput: (e: any) => (text.value = String(e?.target?.value ?? '')),
         }),
@@ -300,10 +300,10 @@ const ArrayField = defineComponent({
               },
               variables: props.variables || [],
             }),
-            h('button', { class: 'btn-mini', type: 'button', onClick: () => remove(i) }, '删除'),
+            h('button', { class: 'btn-mini', type: 'button', onClick: () => remove(i) }, 'Remove'),
           ]),
         ),
-        h('button', { class: 'btn', type: 'button', onClick: add }, '新增'),
+        h('button', { class: 'btn', type: 'button', onClick: add }, 'Add Item'),
       ]);
   },
 });

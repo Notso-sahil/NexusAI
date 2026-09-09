@@ -10,7 +10,7 @@
     </div>
     <div class="form-group checkbox-group">
       <label class="checkbox-label"
-        ><input type="checkbox" v-model="(node as any).config.fullPage" /> 全页截图</label
+        ><input type="checkbox" v-model="(node as any).config.fullPage" /> Capture Full Page</label
       >
     </div>
     <div class="form-group">

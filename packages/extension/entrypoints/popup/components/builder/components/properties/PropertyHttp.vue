@@ -1,7 +1,7 @@
 <template>
   <div class="form-section">
     <div class="form-group">
-      <label class="form-label">请求方法</label>
+      <label class="form-label">HTTP Method</label>
       <select class="form-select" v-model="(node as any).config.method">
         <option>GET</option>
         <option>POST</option>
@@ -37,7 +37,7 @@
       ></textarea>
     </div>
     <div class="form-group">
-      <label class="form-label">FormData (JSON，可选，提供时覆盖 Body)</label>
+      <label class="form-label">FormData (JSON, optional - overrides Request Body)</label>
       <textarea
         class="form-textarea"
         v-model="formDataJson"
@@ -45,7 +45,7 @@
         placeholder='{"fields":{"k":"v"},"files":[{"name":"file","fileUrl":"https://...","filename":"a.png"}]}'
       ></textarea>
       <div class="text-xs text-slate-500" style="margin-top: 6px"
-        >支持简洁数组形式：[["file","url:https://...","a.png"],["metadata","value"]]</div
+        >Supports array format: [["file","url:https://...","a.png"],["metadata","value"]]</div
       >
     </div>
   </div>
