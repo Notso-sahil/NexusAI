@@ -1,5 +1,5 @@
 /**
- * CSS Unique Strategy - 基于唯一 ID 或 class 组合的选择器策略
+ * CSS Unique Strategy - Unique ID or class combination based
  */
 
 import type { SelectorCandidate, SelectorStrategy } from '../types';
