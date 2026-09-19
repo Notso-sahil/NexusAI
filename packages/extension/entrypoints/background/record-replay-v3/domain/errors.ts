@@ -1,81 +1,81 @@
 /**
- * @fileoverview 错误类型定义
- * @description 定义 Record-Replay V3 中使用的错误码和错误类型
+ * @fileoverview 
+ * @description  Record-Replay V3 
  */
 
 import type { JsonValue } from './json';
 
-/** 错误码常量 */
+/** item */
 export const RR_ERROR_CODES = {
-  // ===== 验证错误 =====
-  /** 通用验证错误 */
+  // =====  =====
+  /** item */
   VALIDATION_ERROR: 'VALIDATION_ERROR',
-  /** 不支持的节点类型 */
+  /** item */
   UNSUPPORTED_NODE: 'UNSUPPORTED_NODE',
-  /** DAG 结构无效 */
+  /** DAG item */
   DAG_INVALID: 'DAG_INVALID',
-  /** DAG 存在循环 */
+  /** DAG item */
   DAG_CYCLE: 'DAG_CYCLE',
 
-  // ===== 运行时错误 =====
-  /** 操作超时 */
+  // =====  =====
+  /** item */
   TIMEOUT: 'TIMEOUT',
-  /** Tab 未找到 */
+  /** Tab item */
   TAB_NOT_FOUND: 'TAB_NOT_FOUND',
-  /** Frame 未找到 */
+  /** Frame item */
   FRAME_NOT_FOUND: 'FRAME_NOT_FOUND',
-  /** 目标元素未找到 */
+  /** target elementitem */
   TARGET_NOT_FOUND: 'TARGET_NOT_FOUND',
-  /** 元素不可见 */
+  /** item */
   ELEMENT_NOT_VISIBLE: 'ELEMENT_NOT_VISIBLE',
-  /** 导航失败 */
+  /** item */
   NAVIGATION_FAILED: 'NAVIGATION_FAILED',
-  /** 网络请求失败 */
+  /** item */
   NETWORK_REQUEST_FAILED: 'NETWORK_REQUEST_FAILED',
 
-  // ===== 脚本/工具错误 =====
-  /** 脚本执行失败 */
+  // ===== / =====
+  /** item */
   SCRIPT_FAILED: 'SCRIPT_FAILED',
-  /** 权限被拒绝 */
+  /** item */
   PERMISSION_DENIED: 'PERMISSION_DENIED',
-  /** 工具执行错误 */
+  /** item */
   TOOL_ERROR: 'TOOL_ERROR',
 
-  // ===== 控制错误 =====
-  /** Run 被取消 */
+  // =====  =====
+  /** Run item */
   RUN_CANCELED: 'RUN_CANCELED',
-  /** Run 被暂停 */
+  /** Run item */
   RUN_PAUSED: 'RUN_PAUSED',
 
-  // ===== 内部错误 =====
-  /** 内部错误 */
+  // =====  =====
+  /** item */
   INTERNAL: 'INTERNAL',
-  /** 不变量违规 */
+  /** item */
   INVARIANT_VIOLATION: 'INVARIANT_VIOLATION',
 } as const;
 
-/** 错误码类型 */
+/** item */
 export type RRErrorCode = (typeof RR_ERROR_CODES)[keyof typeof RR_ERROR_CODES];
 
 /**
- * Record-Replay 错误接口
- * @description 统一的错误表示，支持错误链和可重试标记
+ * Record-Replay 
+ * @description ，
  */
 export interface RRError {
-  /** 错误码 */
+  /** item */
   code: RRErrorCode;
-  /** 错误消息 */
+  /** item */
   message: string;
-  /** 附加数据 */
+  /** item */
   data?: JsonValue;
-  /** 是否可重试 */
+  /** item */
   retryable?: boolean;
-  /** 原因错误（错误链） */
+  /** item（item） */
   cause?: RRError;
 }
 
 /**
- * 创建 RRError 的工厂函数
+ *  RRError Factory functions
  */
 export function createRRError(
   code: RRErrorCode,
