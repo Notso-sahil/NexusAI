@@ -1,24 +1,24 @@
 /**
- * @fileoverview JSON 基础类型定义
- * @description 定义 Record-Replay V3 中使用的 JSON 相关类型
+ * @fileoverview JSON 
+ * @description  Record-Replay V3  JSON 
  */
 
-/** JSON 原始类型 */
+/** JSON item */
 export type JsonPrimitive = string | number | boolean | null;
 
-/** JSON 对象类型 */
+/** JSON item */
 export interface JsonObject {
   [key: string]: JsonValue;
 }
 
-/** JSON 数组类型 */
+/** JSON item */
 export type JsonArray = JsonValue[];
 
-/** 任意 JSON 值类型 */
+/** item JSON item */
 export type JsonValue = JsonPrimitive | JsonObject | JsonArray;
 
-/** ISO 8601 日期时间字符串 */
+/** ISO 8601 item */
 export type ISODateTimeString = string;
 
-/** Unix 毫秒时间戳 */
+/** Unix item */
 export type UnixMillis = number;

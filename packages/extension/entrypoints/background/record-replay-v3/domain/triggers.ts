@@ -1,12 +1,12 @@
 /**
- * @fileoverview 触发器类型定义
- * @description 定义 Record-Replay V3 中的触发器规范
+ * @fileoverview 
+ * @description  Record-Replay V3 
  */
 
 import type { JsonObject, UnixMillis } from './json';
 import type { FlowId, TriggerId } from './ids';
 
-/** 触发器类型 */
+/** item */
 export type TriggerKind =
   | 'manual'
   | 'url'
@@ -18,23 +18,23 @@ export type TriggerKind =
   | 'dom';
 
 /**
- * 触发器基础接口
+ * 
  */
 export interface TriggerSpecBase {
-  /** 触发器 ID */
+  /** item ID */
   id: TriggerId;
-  /** 触发器类型 */
+  /** item */
   kind: TriggerKind;
-  /** 是否启用 */
+  /** item */
   enabled: boolean;
-  /** 关联的 Flow ID */
+  /** item Flow ID */
   flowId: FlowId;
-  /** 传递给 Flow 的参数 */
+  /** item Flow item */
   args?: JsonObject;
 }
 
 /**
- * URL 匹配规则
+ * URL 
  */
 export interface UrlMatchRule {
   kind: 'url' | 'domain' | 'path';
@@ -42,53 +42,53 @@ export interface UrlMatchRule {
 }
 
 /**
- * 触发器规范联合类型
+ * 
  */
 export type TriggerSpec =
-  // 手动触发
+  // Note
   | (TriggerSpecBase & { kind: 'manual' })
 
-  // URL 触发
+  // URL 
   | (TriggerSpecBase & {
       kind: 'url';
       match: UrlMatchRule[];
     })
 
-  // Cron 定时触发
+  // Cron 
   | (TriggerSpecBase & {
       kind: 'cron';
       cron: string;
       timezone?: string;
     })
 
-  // Interval 定时触发（固定间隔重复）
+  // Interval （）
   | (TriggerSpecBase & {
       kind: 'interval';
-      /** 间隔分钟数，最小为 1 */
+      /** item，item 1 */
       periodMinutes: number;
     })
 
-  // Once 定时触发（指定时间触发一次后自动禁用）
+  // Once （）
   | (TriggerSpecBase & {
       kind: 'once';
-      /** 触发时间戳 (Unix milliseconds) */
+      /** item (Unix milliseconds) */
       whenMs: UnixMillis;
     })
 
-  // 快捷键触发
+  // Note
   | (TriggerSpecBase & {
       kind: 'command';
       commandKey: string;
     })
 
-  // 右键菜单触发
+  // Note
   | (TriggerSpecBase & {
       kind: 'contextMenu';
       title: string;
       contexts?: ReadonlyArray<string>;
     })
 
-  // DOM 元素出现触发
+  // DOM 
   | (TriggerSpecBase & {
       kind: 'dom';
       selector: string;
@@ -98,36 +98,36 @@ export type TriggerSpec =
     });
 
 /**
- * 触发器触发上下文
- * @description 描述触发器被触发时的上下文信息
+ * 
+ * @description 
  */
 export interface TriggerFireContext {
-  /** 触发器 ID */
+  /** item ID */
   triggerId: TriggerId;
-  /** 触发器类型 */
+  /** item */
   kind: TriggerKind;
-  /** 触发时间 */
+  /** item */
   firedAt: UnixMillis;
-  /** 来源 Tab ID */
+  /** item Tab ID */
   sourceTabId?: number;
-  /** 来源 URL */
+  /** item URL */
   sourceUrl?: string;
 }
 
 /**
- * 根据触发器类型获取类型化的触发器规范
+ * 
  */
 export type TriggerSpecByKind<K extends TriggerKind> = Extract<TriggerSpec, { kind: K }>;
 
 /**
- * 判断触发器是否启用
+ * 
  */
 export function isTriggerEnabled(trigger: TriggerSpec): boolean {
   return trigger.enabled;
 }
 
 /**
- * 创建触发器触发上下文
+ * 
  */
 export function createTriggerFireContext(
   trigger: TriggerSpec,

@@ -1,31 +1,31 @@
 /**
- * @fileoverview Domain 层导出入口
- * @description 导出所有 Domain 类型定义
+ * @fileoverview Domain 
+ * @description  Domain 
  */
 
-// JSON 基础类型
+// JSON 
 export * from './json';
 
-// ID 类型
+// ID 
 export * from './ids';
 
-// 错误类型
+// Note
 export * from './errors';
 
-// 策略类型
+// Note
 export * from './policy';
 
-// 变量类型
+// Note
 export * from './variables';
 
-// Flow 类型
+// Flow 
 export * from './flow';
 
-// 事件类型
+// Note
 export * from './events';
 
-// 调试器类型
+// Note
 export * from './debug';
 
-// 触发器类型
+// Note
 export * from './triggers';
