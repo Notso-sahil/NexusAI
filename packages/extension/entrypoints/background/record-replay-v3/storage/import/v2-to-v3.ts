@@ -1,6 +1,6 @@
 /**
- * @fileoverview V2 到 V3 数据转换器
- * @description 将 V2 格式数据转换为 V3 格式，支持双向转换
+ * @fileoverview V2  V3 
+ * @description  V2  V3 ，
  */
 
 import type { FlowV3, NodeV3, EdgeV3, FlowBinding } from '../../domain/flow';
@@ -79,15 +79,15 @@ export interface ConversionResult<T> {
 // ==================== V2 -> V3 Conversion ====================
 
 /**
- * 将 V2 Flow 转换为 V3 Flow
- * @param v2Flow V2 格式的 Flow
- * @returns 转换结果，包含成功/失败状态、数据和错误/警告信息
+ *  V2 Flow  V3 Flow
+ * @param v2Flow V2  Flow
+ * @returns ，/、/
  */
 export function convertFlowV2ToV3(v2Flow: V2Flow): ConversionResult<FlowV3> {
   const errors: string[] = [];
   const warnings: string[] = [];
 
-  // 1. 基础字段验证
+  // 1. 
   if (!v2Flow.id) {
     errors.push('V2 Flow missing required field: id');
   }
@@ -98,7 +98,7 @@ export function convertFlowV2ToV3(v2Flow: V2Flow): ConversionResult<FlowV3> {
     errors.push('V2 Flow has no nodes');
   }
 
-  // 2. 检查不支持的特性
+  // 2. 
   if (v2Flow.subflows && Object.keys(v2Flow.subflows).length > 0) {
     errors.push(
       'V3 does not support subflows yet. Flow contains subflows: ' +
@@ -106,7 +106,7 @@ export function convertFlowV2ToV3(v2Flow: V2Flow): ConversionResult<FlowV3> {
     );
   }
 
-  // 检查 foreach/while 节点
+  //  foreach/while 
   const unsupportedNodes = (v2Flow.nodes || []).filter(
     (n) => n.type === 'foreach' || n.type === 'while',
   );
@@ -117,12 +117,12 @@ export function convertFlowV2ToV3(v2Flow: V2Flow): ConversionResult<FlowV3> {
     );
   }
 
-  // 如果有致命错误，直接返回
+  // ，returns
   if (errors.length > 0) {
     return { success: false, errors, warnings };
   }
 
-  // 3. 转换节点
+  // 3. 
   const nodes: NodeV3[] = [];
   for (const v2Node of v2Flow.nodes || []) {
     const node = convertNodeV2ToV3(v2Node);
@@ -133,7 +133,7 @@ export function convertFlowV2ToV3(v2Flow: V2Flow): ConversionResult<FlowV3> {
     }
   }
 
-  // 4. 转换边
+  // 4. 
   const edges: EdgeV3[] = [];
   for (const v2Edge of v2Flow.edges || []) {
     const edge = convertEdgeV2ToV3(v2Edge);
@@ -144,7 +144,7 @@ export function convertFlowV2ToV3(v2Flow: V2Flow): ConversionResult<FlowV3> {
     }
   }
 
-  // 5. 计算 entryNodeId
+  // 5.  entryNodeId
   const entryResult = findEntryNodeId(nodes, edges);
   warnings.push(...entryResult.warnings);
   if (!entryResult.nodeId) {
@@ -153,13 +153,13 @@ export function convertFlowV2ToV3(v2Flow: V2Flow): ConversionResult<FlowV3> {
   }
   const entryNodeId = entryResult.nodeId;
 
-  // 6. 转换变量
+  // 6. 
   const variables = convertVariablesV2ToV3(v2Flow.variables || []);
 
-  // 7. 转换元数据
+  // 7. 
   const meta = convertMetaV2ToV3(v2Flow.meta);
 
-  // 8. 构建 V3 Flow
+  // 8.  V3 Flow
   const now = new Date().toISOString() as ISODateTimeString;
   const v3Flow: FlowV3 = {
     schemaVersion: FLOW_SCHEMA_VERSION,
@@ -172,7 +172,7 @@ export function convertFlowV2ToV3(v2Flow: V2Flow): ConversionResult<FlowV3> {
     edges,
   };
 
-  // 可选字段
+  // Note
   if (v2Flow.description) {
     v3Flow.description = v2Flow.description;
   }
@@ -187,7 +187,7 @@ export function convertFlowV2ToV3(v2Flow: V2Flow): ConversionResult<FlowV3> {
 }
 
 /**
- * 转换单个 V2 Node 为 V3 Node
+ *  V2 Node  V3 Node
  */
 function convertNodeV2ToV3(v2Node: V2Node): NodeV3 | null {
   if (!v2Node.id || !v2Node.type) {
@@ -200,7 +200,7 @@ function convertNodeV2ToV3(v2Node: V2Node): NodeV3 | null {
     config: (v2Node.config as Record<string, unknown>) || {},
   };
 
-  // 可选字段
+  // Note
   if (v2Node.name) {
     node.name = v2Node.name;
   }
@@ -215,7 +215,7 @@ function convertNodeV2ToV3(v2Node: V2Node): NodeV3 | null {
 }
 
 /**
- * 转换单个 V2 Edge 为 V3 Edge
+ *  V2 Edge  V3 Edge
  */
 function convertEdgeV2ToV3(v2Edge: V2Edge): EdgeV3 | null {
   if (!v2Edge.id || !v2Edge.from || !v2Edge.to) {
@@ -228,7 +228,7 @@ function convertEdgeV2ToV3(v2Edge: V2Edge): EdgeV3 | null {
     to: v2Edge.to as NodeId,
   };
 
-  // label 直接传递
+  // label 
   if (v2Edge.label) {
     edge.label = v2Edge.label as EdgeV3['label'];
   }
@@ -236,27 +236,27 @@ function convertEdgeV2ToV3(v2Edge: V2Edge): EdgeV3 | null {
   return edge;
 }
 
-/** entryNodeId 计算结果 */
+/** entryNodeId item */
 interface EntryNodeResult {
   nodeId: NodeId | null;
   warnings: string[];
 }
 
 /**
- * 找到入口节点 ID
+ *  ID
  *
- * 规则：
- * 1. 排除 trigger 类型节点（这些是 UI 节点，不参与执行）
- * 2. 只统计「可执行节点 -> 可执行节点」的边来计算入度（忽略 trigger 指出的边）
- * 3. 找到入度为 0 的节点作为候选
- * 4. 如果有多个候选，使用稳定选择规则：
- *    - 优先选择 UI 坐标最靠左上的节点（按 x 升序，x 相同按 y 升序）
- *    - 如果无 UI 坐标，按 ID 字典序取第一个
+ * ：
+ * 1.  trigger （ UI ，）
+ * 2. 「 -> 」（ trigger ）
+ * 3.  0 
+ * 4. ，：
+ *    -  UI （ x ，x  y ）
+ *    -  UI ， ID 
  */
 function findEntryNodeId(nodes: NodeV3[], edges: EdgeV3[]): EntryNodeResult {
   const warnings: string[] = [];
 
-  // 1. 排除 trigger 节点，获取可执行节点
+  // 1.  trigger ，
   const executableNodes = nodes.filter((n) => n.kind !== 'trigger');
   if (executableNodes.length === 0) {
     warnings.push('No executable nodes found; cannot determine entry node');
@@ -265,28 +265,28 @@ function findEntryNodeId(nodes: NodeV3[], edges: EdgeV3[]): EntryNodeResult {
 
   const executableNodeIds = new Set<NodeId>(executableNodes.map((n) => n.id));
 
-  // 2. 计算入度（只统计可执行节点之间的边）
+  // 2. （）
   const inDegree = new Map<NodeId, number>();
   for (const node of executableNodes) {
     inDegree.set(node.id, 0);
   }
   for (const edge of edges) {
-    // 忽略从非可执行节点（如 trigger）指出的边
+    // （ trigger）
     if (!executableNodeIds.has(edge.from)) {
       continue;
     }
-    // 忽略指向非可执行节点的边
+    // Note
     if (!executableNodeIds.has(edge.to)) {
       continue;
     }
     inDegree.set(edge.to, (inDegree.get(edge.to) ?? 0) + 1);
   }
 
-  // 3. 找入度为 0 的节点
+  // 3.  0 
   const rootNodes = executableNodes.filter((n) => inDegree.get(n.id) === 0);
 
   if (rootNodes.length === 0) {
-    // 没有入度为 0 的节点，说明图中存在环，使用稳定选择器选择 fallback
+    //  0 ，， fallback
     const fallbackResult = selectStableRootNode(executableNodes);
     warnings.push(
       `No inDegree=0 executable node found (graph may contain cycles); ` +
@@ -295,12 +295,12 @@ function findEntryNodeId(nodes: NodeV3[], edges: EdgeV3[]): EntryNodeResult {
     return { nodeId: fallbackResult.node.id, warnings };
   }
 
-  // 4. 单个根节点，直接返回
+  // 4. ，returns
   if (rootNodes.length === 1) {
     return { nodeId: rootNodes[0].id, warnings };
   }
 
-  // 5. 多个根节点，使用稳定选择规则
+  // 5. ，
   const selectedResult = selectStableRootNode(rootNodes);
   const candidateIds = rootNodes
     .map((n) => n.id)
@@ -314,25 +314,25 @@ function findEntryNodeId(nodes: NodeV3[], edges: EdgeV3[]): EntryNodeResult {
   return { nodeId: selectedResult.node.id, warnings };
 }
 
-/** 稳定选择结果 */
+/** item */
 interface StableSelectionResult {
   node: NodeV3;
   rule: string;
 }
 
 /**
- * 从多个根节点中选择一个稳定的入口节点
- * 优先按 UI 坐标（左上角优先），其次按 ID 字典序
+ * 
+ *  UI （）， ID 
  */
 function selectStableRootNode(nodes: NodeV3[]): StableSelectionResult {
-  // 检查节点是否有有效的 UI 坐标
+  //  UI 
   const hasValidUi = (n: NodeV3): n is NodeV3 & { ui: { x: number; y: number } } =>
     !!n.ui && Number.isFinite(n.ui.x) && Number.isFinite(n.ui.y);
 
   const nodesWithUi = nodes.filter(hasValidUi);
 
   if (nodesWithUi.length > 0) {
-    // 按 UI 坐标排序：x 升序 -> y 升序 -> id 字典序（作为 tie-breaker）
+    //  UI ：x  -> y  -> id （ tie-breaker）
     nodesWithUi.sort((a, b) => {
       if (a.ui.x !== b.ui.x) return a.ui.x - b.ui.x;
       if (a.ui.y !== b.ui.y) return a.ui.y - b.ui.y;
@@ -345,13 +345,13 @@ function selectStableRootNode(nodes: NodeV3[]): StableSelectionResult {
     };
   }
 
-  // 无 UI 坐标，按 ID 字典序
+  //  UI ， ID 
   const sortedById = [...nodes].sort((a, b) => a.id.localeCompare(b.id));
   return { node: sortedById[0], rule: 'id' };
 }
 
 /**
- * 转换变量定义
+ * 
  */
 function convertVariablesV2ToV3(v2Variables: V2VariableDef[]): VariableDefinition[] {
   return v2Variables
@@ -379,7 +379,7 @@ function convertVariablesV2ToV3(v2Variables: V2VariableDef[]): VariableDefinitio
 }
 
 /**
- * 转换元数据
+ * 
  */
 function convertMetaV2ToV3(v2Meta: V2Flow['meta']): FlowV3['meta'] | undefined {
   if (!v2Meta) return undefined;
@@ -397,7 +397,7 @@ function convertMetaV2ToV3(v2Meta: V2Flow['meta']): FlowV3['meta'] | undefined {
     }));
   }
 
-  // 如果 meta 为空对象，返回 undefined
+  //  meta ，returns undefined
   if (Object.keys(meta).length === 0) {
     return undefined;
   }
@@ -408,15 +408,15 @@ function convertMetaV2ToV3(v2Meta: V2Flow['meta']): FlowV3['meta'] | undefined {
 // ==================== V3 -> V2 Conversion ====================
 
 /**
- * 将 V3 Flow 转换为 V2 Flow（用于在 V2 Builder 中编辑）
- * @param v3Flow V3 格式的 Flow
- * @returns 转换结果
+ *  V3 Flow  V2 Flow（ V2 Builder ）
+ * @param v3Flow V3  Flow
+ * @returns 
  */
 export function convertFlowV3ToV2(v3Flow: FlowV3): ConversionResult<V2Flow> {
   const errors: string[] = [];
   const warnings: string[] = [];
 
-  // 1. 转换节点
+  // 1. 
   const nodes: V2Node[] = v3Flow.nodes.map((n) => ({
     id: n.id,
     type: n.kind, // V3 kind -> V2 type
@@ -426,7 +426,7 @@ export function convertFlowV3ToV2(v3Flow: FlowV3): ConversionResult<V2Flow> {
     ui: n.ui,
   }));
 
-  // 2. 转换边
+  // 2. 
   const edges: V2Edge[] = v3Flow.edges.map((e) => ({
     id: e.id,
     from: e.from,
@@ -434,7 +434,7 @@ export function convertFlowV3ToV2(v3Flow: FlowV3): ConversionResult<V2Flow> {
     label: e.label,
   }));
 
-  // 3. 转换变量
+  // 3. 
   const variables: V2VariableDef[] = (v3Flow.variables || []).map((v) => ({
     key: v.name,
     label: v.label,
@@ -443,7 +443,7 @@ export function convertFlowV3ToV2(v3Flow: FlowV3): ConversionResult<V2Flow> {
     rules: v.required ? { required: v.required } : undefined,
   }));
 
-  // 4. 转换元数据
+  // 4. 
   const meta: V2Flow['meta'] = {
     createdAt: v3Flow.createdAt,
     updatedAt: v3Flow.updatedAt,
@@ -460,7 +460,7 @@ export function convertFlowV3ToV2(v3Flow: FlowV3): ConversionResult<V2Flow> {
     }));
   }
 
-  // 5. 构建 V2 Flow
+  // 5.  V2 Flow
   const v2Flow: V2Flow = {
     id: v3Flow.id,
     name: v3Flow.name,
@@ -477,7 +477,7 @@ export function convertFlowV3ToV2(v3Flow: FlowV3): ConversionResult<V2Flow> {
 
 // ==================== Trigger Conversion ====================
 
-/** V2 Trigger 定义 */
+/** V2 Trigger item */
 interface V2Trigger {
   id: string;
   type: 'url' | 'command' | 'manual' | 'schedule' | 'element';
@@ -499,9 +499,9 @@ interface V2Trigger {
 }
 
 /**
- * 将 V2 Trigger 转换为 V3 TriggerSpec
- * @param v2Trigger V2 格式的 Trigger
- * @returns 转换结果
+ *  V2 Trigger  V3 TriggerSpec
+ * @param v2Trigger V2  Trigger
+ * @returns 
  */
 export function convertTriggerV2ToV3(v2Trigger: V2Trigger): ConversionResult<TriggerSpec> {
   const errors: string[] = [];
@@ -521,7 +521,7 @@ export function convertTriggerV2ToV3(v2Trigger: V2Trigger): ConversionResult<Tri
     return { success: false, errors, warnings };
   }
 
-  // 根据 type 构建不同的 TriggerSpec
+  //  type  TriggerSpec
   let trigger: TriggerSpec;
 
   switch (v2Trigger.type) {
@@ -554,7 +554,7 @@ export function convertTriggerV2ToV3(v2Trigger: V2Trigger): ConversionResult<Tri
       };
       break;
 
-    case 'schedule': { // 将 V2 schedule 转换为 cron 表达式
+    case 'schedule': { // V2 schedule  cron
       const cron = convertScheduleToCron(v2Trigger.schedule);
       if (!cron) {
         errors.push('Could not convert V2 schedule to cron expression');
@@ -589,13 +589,13 @@ export function convertTriggerV2ToV3(v2Trigger: V2Trigger): ConversionResult<Tri
 }
 
 /**
- * 将 V2 schedule 配置转换为 cron 表达式
+ *  V2 schedule  cron 
  */
 function convertScheduleToCron(schedule: V2Trigger['schedule']): string | null {
   if (!schedule) return null;
 
   switch (schedule.type) {
-    case 'interval': { // 将间隔转换为近似 cron（每 N 分钟）
+    case 'interval': { // cron（ N ）
       const intervalMinutes = Math.max(1, Math.round((schedule.intervalMs || 60000) / 60000));
       if (intervalMinutes < 60) {
         return `*/${intervalMinutes} * * * *`;
@@ -606,14 +606,14 @@ function convertScheduleToCron(schedule: V2Trigger['schedule']): string | null {
     }
 
     case 'daily':
-      // 每天指定时间
+      // Note
       if (schedule.time) {
         const [hour, minute] = schedule.time.split(':').map(Number);
         return `${minute || 0} ${hour || 0} * * *`;
       }
-      return '0 0 * * *'; // 默认每天 0:00
+      return '0 0 * * *'; // 0:00
 
-    case 'weekly': { // 每周指定天数和时间
+    case 'weekly': { // 
       const days = (schedule.days || [0]).join(',');
       if (schedule.time) {
         const [hour, minute] = schedule.time.split(':').map(Number);
@@ -630,17 +630,17 @@ function convertScheduleToCron(schedule: V2Trigger['schedule']): string | null {
 // ==================== Converter Interface ====================
 
 /**
- * V2 到 V3 转换器接口
+ * V2  V3 
  */
 export interface V2ToV3Converter {
-  /** 转换 Flow */
+  /** item Flow */
   convertFlow(v2Flow: unknown): FlowV3;
-  /** 转换 Trigger */
+  /** item Trigger */
   convertTrigger(v2Trigger: unknown): TriggerSpec;
 }
 
 /**
- * 创建 V2ToV3Converter 实例
+ *  V2ToV3Converter 
  */
 export function createV2ToV3Converter(): V2ToV3Converter {
   return {
@@ -663,8 +663,8 @@ export function createV2ToV3Converter(): V2ToV3Converter {
 }
 
 /**
- * 创建 NotImplemented 的 V2ToV3Converter（向后兼容）
- * @deprecated 使用 createV2ToV3Converter() 替代
+ *  NotImplemented  V2ToV3Converter（）
+ * @deprecated  createV2ToV3Converter() 
  */
 export function createNotImplementedV2ToV3Converter(): V2ToV3Converter {
   return createV2ToV3Converter();
