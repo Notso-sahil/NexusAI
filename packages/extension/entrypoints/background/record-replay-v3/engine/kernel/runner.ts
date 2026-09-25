@@ -1,6 +1,6 @@
 /**
- * @fileoverview RunRunner 接口和实现
- * @description 定义和实现单个 Run 的顺序执行器
+ * @fileoverview RunRunner 
+ * @description  Run 
  */
 
 import type { NodeId, RunId } from '../../domain/ids';
@@ -35,72 +35,72 @@ import type { RunResult } from './kernel';
 // ==================== Types ====================
 
 /**
- * RunRunner 运行时状态
+ * RunRunner 
  */
 export interface RunnerRuntimeState {
   /** Run ID */
   runId: RunId;
-  /** 当前节点 ID */
+  /** item ID */
   currentNodeId: NodeId | null;
-  /** 当前尝试次数 */
+  /** item */
   attempt: number;
-  /** 变量表 */
+  /** item */
   vars: Record<string, JsonValue>;
-  /** 是否暂停 */
+  /** item */
   paused: boolean;
-  /** 是否取消 */
+  /** item */
   canceled: boolean;
 }
 
 /**
- * RunRunner 配置
+ * RunRunner 
  */
 export interface RunnerConfig {
-  /** Flow 快照 */
+  /** Flow item */
   flow: FlowV3;
   /** Tab ID */
   tabId: number;
-  /** 初始参数 */
+  /** item */
   args?: JsonObject;
-  /** 起始节点 ID */
+  /** item ID */
   startNodeId?: NodeId;
-  /** 调试配置 */
+  /** item */
   debug?: { breakpoints?: NodeId[]; pauseOnStart?: boolean };
 }
 
 /**
- * RunRunner 接口
+ * RunRunner 
  */
 export interface RunRunner {
   /** Run ID */
   readonly runId: RunId;
-  /** 当前状态 */
+  /** item */
   readonly state: RunnerRuntimeState;
-  /** 订阅事件 */
+  /** item */
   onEvent(listener: (event: RunEvent) => void): Unsubscribe;
-  /** 开始执行 */
+  /** item */
   start(): Promise<RunResult>;
-  /** 暂停执行 */
+  /** item */
   pause(): void;
-  /** 恢复执行 */
+  /** item */
   resume(): void;
-  /** 取消执行 */
+  /** item */
   cancel(reason?: string): void;
-  /** 获取变量值 */
+  /** item */
   getVar(name: string): JsonValue | undefined;
-  /** 设置变量值 */
+  /** item */
   setVar(name: string, value: JsonValue): void;
 }
 
 /**
- * RunRunner 工厂接口
+ * RunRunner 
  */
 export interface RunRunnerFactory {
   create(runId: RunId, config: RunnerConfig): RunRunner;
 }
 
 /**
- * RunRunner 工厂依赖
+ * RunRunner 
  */
 export interface RunRunnerFactoryDeps {
   storage: StoragePort;
@@ -225,7 +225,7 @@ class SerialQueue {
 // ==================== Factory ====================
 
 /**
- * 创建 NotImplemented 的 RunRunnerFactory
+ *  NotImplemented  RunRunnerFactory
  */
 export function createNotImplementedRunnerFactory(): RunRunnerFactory {
   return {
@@ -236,7 +236,7 @@ export function createNotImplementedRunnerFactory(): RunRunnerFactory {
 }
 
 /**
- * 创建 RunRunner 工厂
+ *  RunRunner 
  */
 export function createRunRunnerFactory(deps: RunRunnerFactoryDeps): RunRunnerFactory {
   const plugins = deps.plugins ?? getPluginRegistry();
