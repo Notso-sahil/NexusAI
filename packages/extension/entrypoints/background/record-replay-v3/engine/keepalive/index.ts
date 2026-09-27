@@ -1,5 +1,5 @@
 /**
- * @fileoverview Keepalive 模块导出入口
+ * @fileoverview Keepalive 
  */
 
 export * from './offscreen-keepalive';
