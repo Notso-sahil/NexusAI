@@ -1,6 +1,6 @@
 /**
- * @fileoverview 租约管理
- * @description 管理 Run 的租约续约和过期回收
+ * @fileoverview 
+ * @description  Run 
  */
 
 import type { UnixMillis } from '../../domain/json';
@@ -8,57 +8,57 @@ import type { RunId } from '../../domain/ids';
 import type { RunQueue, RunQueueConfig, Lease } from './queue';
 
 /**
- * 租约管理器
- * @description 管理租约续约和过期检测
+ * 
+ * @description 
  */
 export interface LeaseManager {
   /**
-   * 开始心跳
-   * @param ownerId 持有者 ID
+   * 
+   * @param ownerId  ID
    */
   startHeartbeat(ownerId: string): void;
 
   /**
-   * 停止心跳
-   * @param ownerId 持有者 ID
+   * 
+   * @param ownerId  ID
    */
   stopHeartbeat(ownerId: string): void;
 
   /**
-   * 检查并回收过期租约
-   * @param now 当前时间
-   * @returns 被回收的 Run ID 列表
+   * 
+   * @param now 
+   * @returns  Run ID 
    */
   reclaimExpiredLeases(now: UnixMillis): Promise<RunId[]>;
 
   /**
-   * 判断租约是否过期
+   * 
    */
   isLeaseExpired(lease: Lease, now: UnixMillis): boolean;
 
   /**
-   * 创建新租约
+   * 
    */
   createLease(ownerId: string, now: UnixMillis): Lease;
 
   /**
-   * 停止所有心跳
+   * 
    */
   dispose(): void;
 }
 
 /**
- * 创建租约管理器
+ * 
  */
 export function createLeaseManager(queue: RunQueue, config: RunQueueConfig): LeaseManager {
   const heartbeatTimers = new Map<string, ReturnType<typeof setInterval>>();
 
   return {
     startHeartbeat(ownerId: string): void {
-      // 如果已有定时器，先停止
+      // ，
       this.stopHeartbeat(ownerId);
 
-      // 创建新的心跳定时器
+      // Note
       const timer = setInterval(async () => {
         try {
           await queue.heartbeat(ownerId, Date.now());
@@ -105,8 +105,8 @@ export function createLeaseManager(queue: RunQueue, config: RunQueueConfig): Lea
 }
 
 /**
- * 生成唯一的 owner ID
- * @description 用于标识当前 Service Worker 实例
+ *  owner ID
+ * @description  Service Worker 
  */
 export function generateOwnerId(): string {
   return `sw_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
