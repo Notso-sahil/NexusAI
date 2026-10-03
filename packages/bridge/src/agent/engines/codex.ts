@@ -28,10 +28,9 @@ interface TodoListItem {
  * it focuses on streaming Codex JSON events into RealtimeEvent envelopes that the
  * sidepanel UI can consume.
  *
- * 中文说明：该引擎基于 other/cweb 中 Codex 适配器的事件协议，完整处理
- * item.started/item.delta/item.completed/item.failed/error 等事件，并
- * 通过 AgentStreamManager 将编码后的 RealtimeEvent 推送给 sidepanel，
- * 确保数据链路「Sidepanel → Native Server → Codex CLI → Sidepanel」闭环。
+ * Architecture Note: Handles the full event lifecycle (item.started, item.delta, item.completed,
+ * item.failed, error) and pushes encoded RealtimeEvents to the sidepanel via AgentStreamManager,
+ * ensuring closed-loop data flow: Sidepanel -> Native Server -> Codex CLI -> Sidepanel.
  */
 export class CodexEngine implements AgentEngine {
   public readonly name = 'codex' as const;

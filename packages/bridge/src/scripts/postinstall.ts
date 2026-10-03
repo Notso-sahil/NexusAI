@@ -74,16 +74,16 @@ function isRunningElevated(): boolean {
 }
 
 /**
- * 确保执行权限（无论是否为全局安装）
+ * Ensure execution permissions (regardless of global or local installation)
  */
 async function ensureExecutionPermissions(): Promise<void> {
   if (process.platform === 'win32') {
-    // Windows 平台处理
+    // Windows platform handling
     await ensureWindowsFilePermissions();
     return;
   }
 
-  // Unix/Linux 平台处理
+  // Unix/Linux platform handling
   const filesToCheck = [
     path.join(__dirname, '..', 'index.js'),
     path.join(__dirname, '..', 'run_host.sh'),
@@ -112,7 +112,7 @@ async function ensureExecutionPermissions(): Promise<void> {
 }
 
 /**
- * Windows 平台文件权限处理
+ * Windows platform file permissions handling
  */
 async function ensureWindowsFilePermissions(): Promise<void> {
   const filesToCheck = [
@@ -124,18 +124,17 @@ async function ensureWindowsFilePermissions(): Promise<void> {
   for (const filePath of filesToCheck) {
     if (fs.existsSync(filePath)) {
       try {
-        // 检查文件是否为只读，如果是则移除只读属性
+        // Check if file is read-only and remove read-only attribute if needed
         const stats = fs.statSync(filePath);
         if (!(stats.mode & parseInt('200', 8))) {
-          // 检查写权限
-          // 尝试移除只读属性
+          // Check write permission and remove read-only attribute
           fs.chmodSync(filePath, stats.mode | parseInt('200', 8));
           console.log(
             colorText(`✓ Removed read-only attribute from ${path.basename(filePath)}`, 'green'),
           );
         }
 
-        // 验证文件可读性
+        // Verify file read access
         fs.accessSync(filePath, fs.constants.R_OK);
         console.log(
           colorText(`✓ Verified file accessibility for ${path.basename(filePath)}`, 'green'),
@@ -213,7 +212,7 @@ async function tryRegisterNativeHost(): Promise<void> {
   } catch (error) {
     console.log(
       colorText(
-        `注册过程中出现错误: ${error instanceof Error ? error.message : String(error)}`,
+        `Error during host registration: ${error instanceof Error ? error.message : String(error)}`,
         'red',
       ),
     );
@@ -222,7 +221,7 @@ async function tryRegisterNativeHost(): Promise<void> {
 }
 
 /**
- * 打印手动安装指南
+ * Print manual registration guide
  */
 function printManualInstructions(): void {
   console.log('\n' + colorText('===== Manual Registration Guide =====', 'blue'));
@@ -277,7 +276,7 @@ function printManualInstructions(): void {
 }
 
 /**
- * 主函数
+ * Main execution entrypoint
  */
 async function main(): Promise<void> {
   console.log(colorText(`Installing ${COMMAND_NAME}...`, 'green'));
