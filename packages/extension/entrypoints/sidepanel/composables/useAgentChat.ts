@@ -292,7 +292,7 @@ export function useAgentChat(options: UseAgentChatOptions) {
     try {
       const stored = await chrome.storage.local.get([STORAGE_KEYS.HUMAN_TEXT_ENABLED]);
       if (stored[STORAGE_KEYS.HUMAN_TEXT_ENABLED] !== false) {
-        instructionText = `${instructionText}\n\n[Directive: Human-Generated Voice. Write naturally, directly, and specifically. Sound like a real person, not an AI or corporate writer. Start with the point. Skip throat-clearing openings and summaries. Never use em dashes (—). Avoid AI words: delve, robust, pivotal, transformative, cutting-edge, showcasing, underscoring, spearhead, foster, streamline, beacon, testament, tapestry, game-changer, multifaceted, harness, seamless.]`;
+        instructionText = `${instructionText}\n\n[Directive: Human-Generated Text. Write naturally, directly, and specifically. Sound like a real person, not an AI or corporate writer. Start with the point. Skip throat-clearing openings and summaries. Never use em dashes (—). Avoid AI words: delve, robust, pivotal, transformative, cutting-edge, showcasing, underscoring, spearhead, foster, streamline, beacon, testament, tapestry, game-changer, multifaceted, harness, seamless.]`;
       }
     } catch {}
 

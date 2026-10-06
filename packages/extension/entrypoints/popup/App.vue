@@ -8,13 +8,13 @@
         </div>
       </div>
       <div class="content">
-        <!-- Human-Generated Voice Toggle Banner -->
+        <!-- Human-Generated Text Toggle Banner -->
         <div class="section humanizer-banner-section">
           <div class="humanizer-banner-card">
             <div class="humanizer-meta">
               <div class="humanizer-title-row">
                 <span class="humanizer-icon">✍️</span>
-                <span class="humanizer-title">Human-Generated Voice</span>
+                <span class="humanizer-title">Human-Generated Text</span>
                 <span :class="['humanizer-pill', isHumanTextEnabled ? 'active' : 'inactive']">
                   {{ isHumanTextEnabled ? 'Active' : 'Off' }}
                 </span>
@@ -428,7 +428,7 @@ import {
   MarkerIcon,
 } from './components/icons';
 
-// Human-Generated Voice state
+// Human-Generated Text state
 const isHumanTextEnabled = ref(true);
 
 const loadHumanTextSetting = async () => {
@@ -2772,7 +2772,7 @@ onUnmounted(() => {
   transform: translateX(-50%) translateY(12px);
 }
 
-/* Human-Generated Voice Banner */
+/* Human-Generated Text Banner */
 .humanizer-banner-section {
   margin-bottom: 12px;
 }

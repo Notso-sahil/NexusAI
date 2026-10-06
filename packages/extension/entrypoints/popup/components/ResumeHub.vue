@@ -32,12 +32,12 @@
             </p>
             <div class="humanizer-toggle-row">
               <div class="humanizer-toggle-info">
-                <span class="humanizer-toggle-title">✍️ Human-Generated Voice</span>
+                <span class="humanizer-toggle-title">✍️ Human-Generated Text</span>
                 <span class="humanizer-toggle-hint">
                   Natural tone, concrete facts, zero AI clichés
                 </span>
               </div>
-              <label class="nexus-switch-modern" title="Toggle Human-Generated Voice mode">
+              <label class="nexus-switch-modern" title="Toggle Human-Generated Text mode">
                 <input
                   type="checkbox"
                   v-model="isHumanTextEnabled"
