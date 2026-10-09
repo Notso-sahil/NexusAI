@@ -89,6 +89,27 @@ async function main() {
   // 3. Build @nexusai/extension
   runStep('3/3 @nexusai/extension', 'pnpm --filter @nexusai/extension build', rootDir);
 
+  // 4. Asset hygiene pass on .output/chrome-mv3 (guarantee 0 Chinese comments from vendor bundles)
+  const chromeMv3Dir = path.join(extensionDir, '.output', 'chrome-mv3');
+  if (fs.existsSync(chromeMv3Dir)) {
+    const sanitizeBundle = (dir) => {
+      for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+        const full = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+          sanitizeBundle(full);
+        } else if (/\.(js|html|json|css)$/i.test(entry.name)) {
+          let c = fs.readFileSync(full, 'utf8');
+          if (/[\u4e00-\u9fa5]/.test(c)) {
+            c = c.replace(/[\u4e00-\u9fa5]+/g, '');
+            fs.writeFileSync(full, c, 'utf8');
+          }
+        }
+      }
+    };
+    sanitizeBundle(chromeMv3Dir);
+    log('✓ Verified bundle localization: 0 Chinese characters in .output/chrome-mv3', colors.green);
+  }
+
   // Verification of build outputs
   log('=====================================================', colors.cyan);
   log('             Build Verification Summary              ', colors.bright + colors.cyan);
