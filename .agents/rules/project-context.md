@@ -43,7 +43,7 @@ NexusAI/
 │       ├── dev-workflow.md      ← Development process rules
 │       ├── fork-policy.md       ← What can/cannot be copied from source
 │       ├── project-context.md   ← This file — project identity & layout
-│       └── tool-reference.md    ← All 28 tools with descriptions
+│       └── tool-reference.md    ← All 30 tools with descriptions
 ├── docs/                        ← Auto-generated Word documents (one per phase)
 ├── packages/
 │   ├── extension/               ← Chrome MV3 Extension (Vue 3, WXT)
@@ -66,14 +66,13 @@ NexusAI/
 
 Phases completed:
 - [x] Phase 1: Monorepo scaffold (pnpm workspace, tsconfig)
-- [x] Phase 3: Bridge package (Fastify, MCP SDK, CLI)
-- [x] Phase 4: Shared package (tool schemas, message types) — built successfully
-- [ ] Phase 2: Chrome Extension (WXT, popup UI, tool implementations)
-- [ ] Phase 5: New tools (`nexus_quiz_solver`, `nexus_form_autofill`)
-- [ ] Phase 6: Build pipeline (`build-and-install.ps1`)
-- [ ] Phase 7: Config final update
-- [ ] Phase 8: End-to-end testing
-- [ ] Phase 9: Word document regeneration
+- [x] Phase 2: Chrome Extension (WXT, popup UI, 100% English localization, MV3 bundle)
+- [x] Phase 3: Bridge package (Fastify MCP server on :12307, native messaging relay, CLI)
+- [x] Phase 4: Shared package (tool schemas, message types, CJS + ESM)
+- [x] Phase 5: New features & storage isolation (`nexus_job_applier`, `nexus_quiz_solver`, `nexus_form_autofill`, Resume Vault, `~/.nexusai-agent`)
+- [x] Phase 6: Human-Generated Text engine & cross-platform build pipeline (`build-all.mjs`, `install-host.mjs`, `build-and-install.ps1`/`.sh`)
+- [x] Phase 7: Configuration & rules updating (`mcp_config.json`, `browser-agent.md`, `tool-reference.md`, `docs/phase-7-config.docx`)
+- [ ] Phase 8: End-to-end testing & validation scenarios
 
 ---
 

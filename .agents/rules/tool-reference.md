@@ -4,6 +4,7 @@
 - **Server key**: `nexus-browser`
 - **URL**: `http://127.0.0.1:12307/mcp`
 - **Start bridge**: `nexus-bridge start`
+- **Total active tools**: 30 tools
 
 ---
 
@@ -38,47 +39,52 @@
 | `chrome_request_element_selection` | Ask user to manually select an element (human-in-the-loop fallback) |
 | `chrome_computer` | Full mouse + keyboard control (use as last resort) |
 
-### Forms (Preferred for Form Tasks)
+### Forms & Autonomous Application Filling
 | Tool | Description |
 |:---|:---|
-| `chrome_fill_or_select` | Fill an input, textarea, select, checkbox, or radio by selector/ref |
+| `nexus_job_applier` | ⭐ **Autonomous Job Application Filler** — Extracts company context & job description, maps Resume Vault candidate profile, synthesizes authentic Human-Generated answers, populates inputs with synthetic events, and audits results |
+| `nexus_form_autofill` | ⭐ **Semantic Multi-Field Autofill** — Provide label→value map; automatically matches inputs/textareas/selects with virtual DOM event bubbling |
+| `chrome_fill_or_select` | Fill a single input, textarea, select, checkbox, or radio by selector/ref |
 | `chrome_upload_file` | Upload files to a file input element |
-| `nexus_form_autofill` | ⭐ **Smart semantic form fill** — provide label→value map, auto-matches fields |
 
 ### Screenshots & Recording
 | Tool | Description |
 |:---|:---|
-| `chrome_screenshot` | Screenshot of page or element |
-| `chrome_gif_recorder` | Record tab activity as animated GIF |
+| `chrome_screenshot` | Capture visual screenshot of page viewport or specific element |
+| `chrome_gif_recorder` | Record tab activity as an animated GIF |
 | `performance_start_trace` | Start performance trace recording |
 | `performance_stop_trace` | Stop trace recording |
-| `performance_analyze_insight` | Summarize recorded trace |
+| `performance_analyze_insight` | Summarize recorded performance trace |
 
 ### Network
 | Tool | Description |
 |:---|:---|
-| `chrome_network_request` | Send network request with browser cookies/context |
+| `chrome_network_request` | Send network request with browser cookies and context |
 | `chrome_network_capture` | Capture network traffic (start/stop) |
-| `chrome_handle_download` | Wait for and get details of a browser download |
+| `chrome_handle_download` | Wait for and get details of a browser file download |
 
-### NexusAI Custom Tools
+### Quiz Solving
 | Tool | Description |
 |:---|:---|
-| `nexus_quiz_solver` | ⭐ **Extract quiz structure** (questions + answer selectors) from active tab |
-| `nexus_form_autofill` | ⭐ **Semantic form autofill** using label matching |
+| `nexus_quiz_solver` | ⭐ **Autonomous Quiz Solver** — Extracts quiz structure (questions + answer options) from active tab, evaluates answers, and selects/inputs responses |
 
 ---
 
 ## Preferred Tool Combos
 
-### Fill a Web Form
+### Autonomous Job Application
+```
+get_windows_and_tabs → chrome_read_page → nexus_job_applier → chrome_screenshot → human verification
+```
+
+### Fill a General Web Form
 ```
 get_windows_and_tabs → chrome_read_page → nexus_form_autofill → chrome_screenshot → chrome_click_element (submit)
 ```
 
 ### Answer a Quiz
 ```
-get_windows_and_tabs → nexus_quiz_solver → chrome_click_element (×N answers) → chrome_click_element (submit)
+get_windows_and_tabs → nexus_quiz_solver → chrome_screenshot → chrome_click_element (submit)
 ```
 
 ### Read Page Content
@@ -98,10 +104,11 @@ get_windows_and_tabs → chrome_screenshot
 
 ---
 
-## Notes
+## Operational Guidelines
 
-- **Always call `get_windows_and_tabs` first** — never assume a tab ID.
-- **Prefer `chrome_read_page` over `chrome_screenshot`** for understanding page structure.
+- **Always call `get_windows_and_tabs` first** to obtain the active `tabId`.
+- **Prefer `nexus_job_applier` for job applications**: Reads on-device Resume Vault, extracts company mission/role, and synthesizes tailored responses adhering to Human-Generated Text rules.
 - **Prefer `nexus_form_autofill` over individual `chrome_fill_or_select` calls** for multi-field forms.
-- **Prefer `nexus_quiz_solver` over manually reading and parsing radio buttons**.
-- `chrome_computer` is the most powerful but slowest tool — only use it when all targeted tools fail.
+- **Prefer `nexus_quiz_solver` over manual inspection** for questionnaires and online assessments.
+- **Always verify before submitting**: Take a `chrome_screenshot` after form filling to verify correctness before clicking submit buttons.
+- `chrome_computer` is the most powerful but slowest tool; only use it when targeted DOM tools cannot reach an element.
